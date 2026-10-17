@@ -1,0 +1,216 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://stages/stage.gd" id="1_stage"]
+[ext_resource type="Script" path="res://stages/soft_platform.gd" id="2_platform"]
+[ext_resource type="Script" path="res://stages/stage_ledge.gd" id="3_ledge"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Sky_material"]
+sky_top_color = Color(0.32, 0.55, 0.88, 1)
+sky_horizon_color = Color(0.72, 0.84, 0.95, 1)
+ground_bottom_color = Color(0.35, 0.45, 0.35, 1)
+ground_horizon_color = Color(0.72, 0.84, 0.95, 1)
+
+[sub_resource type="Sky" id="Sky_1"]
+sky_material = SubResource("Sky_material")
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 2
+sky = SubResource("Sky_1")
+ambient_light_source = 3
+ambient_light_energy = 0.8
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Material_dirt"]
+albedo_color = Color(0.48, 0.33, 0.22, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Material_grass"]
+albedo_color = Color(0.36, 0.66, 0.3, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Material_wood"]
+albedo_color = Color(0.72, 0.52, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_trunk"]
+albedo_color = Color(0.4, 0.28, 0.18, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Material_leaves"]
+albedo_color = Color(0.25, 0.52, 0.28, 1)
+roughness = 1.0
+
+[sub_resource type="StandardMaterial3D" id="Material_hill"]
+albedo_color = Color(0.42, 0.62, 0.38, 1)
+roughness = 1.0
+
+[sub_resource type="BoxShape3D" id="Box_main"]
+size = Vector3(16, 2, 6)
+
+[sub_resource type="BoxShape3D" id="Box_under"]
+size = Vector3(11, 2.5, 5)
+
+[sub_resource type="BoxMesh" id="Mesh_main"]
+size = Vector3(16, 2, 6)
+
+[sub_resource type="BoxMesh" id="Mesh_under"]
+size = Vector3(11, 2.5, 5)
+
+[sub_resource type="BoxMesh" id="Mesh_grass"]
+size = Vector3(16.1, 0.3, 6.1)
+
+[sub_resource type="BoxShape3D" id="Box_platform"]
+size = Vector3(4.5, 0.3, 3)
+
+[sub_resource type="BoxMesh" id="Mesh_platform"]
+size = Vector3(4.5, 0.3, 3)
+
+[sub_resource type="CylinderMesh" id="Mesh_trunk"]
+top_radius = 0.35
+bottom_radius = 0.45
+height = 4.0
+
+[sub_resource type="SphereMesh" id="Mesh_canopy"]
+radius = 2.0
+height = 3.4
+
+[sub_resource type="SphereMesh" id="Mesh_hill"]
+radius = 30.0
+height = 30.0
+
+[node name="Meadow" type="Node3D" node_paths=PackedStringArray("spawn_points", "respawn_marker")]
+script = ExtResource("1_stage")
+blast_zone = Rect2(-24, -15, 48, 37)
+camera_bounds = Rect2(-16, -8, 32, 21)
+spawn_points = [NodePath("Spawns/P1"), NodePath("Spawns/P2")]
+respawn_marker = NodePath("Respawn")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.96, -0.44, 0)
+light_energy = 1.1
+shadow_enabled = true
+directional_shadow_max_distance = 60.0
+
+[node name="MainPlatform" type="StaticBody3D" parent="."]
+
+[node name="Top" type="CollisionShape3D" parent="MainPlatform"]
+position = Vector3(0, -1, 0)
+shape = SubResource("Box_main")
+
+[node name="Under" type="CollisionShape3D" parent="MainPlatform"]
+position = Vector3(0, -3.25, 0)
+shape = SubResource("Box_under")
+
+[node name="TopMesh" type="MeshInstance3D" parent="MainPlatform"]
+position = Vector3(0, -1, 0)
+mesh = SubResource("Mesh_main")
+surface_material_override/0 = SubResource("Material_dirt")
+
+[node name="UnderMesh" type="MeshInstance3D" parent="MainPlatform"]
+position = Vector3(0, -3.25, 0)
+mesh = SubResource("Mesh_under")
+surface_material_override/0 = SubResource("Material_dirt")
+
+[node name="Grass" type="MeshInstance3D" parent="MainPlatform"]
+position = Vector3(0, -0.14, 0)
+mesh = SubResource("Mesh_grass")
+surface_material_override/0 = SubResource("Material_grass")
+
+[node name="LedgeLeft" type="Marker3D" parent="MainPlatform"]
+position = Vector3(-8, 0, 0)
+script = ExtResource("3_ledge")
+side = -1
+
+[node name="LedgeRight" type="Marker3D" parent="MainPlatform"]
+position = Vector3(8, 0, 0)
+script = ExtResource("3_ledge")
+
+[node name="PlatformLeft" type="StaticBody3D" parent="."]
+position = Vector3(-3.75, 2.6, 0)
+script = ExtResource("2_platform")
+
+[node name="Shape" type="CollisionShape3D" parent="PlatformLeft"]
+shape = SubResource("Box_platform")
+
+[node name="Mesh" type="MeshInstance3D" parent="PlatformLeft"]
+mesh = SubResource("Mesh_platform")
+surface_material_override/0 = SubResource("Material_wood")
+
+[node name="PlatformRight" type="StaticBody3D" parent="."]
+position = Vector3(3.75, 2.6, 0)
+script = ExtResource("2_platform")
+
+[node name="Shape" type="CollisionShape3D" parent="PlatformRight"]
+shape = SubResource("Box_platform")
+
+[node name="Mesh" type="MeshInstance3D" parent="PlatformRight"]
+mesh = SubResource("Mesh_platform")
+surface_material_override/0 = SubResource("Material_wood")
+
+[node name="Spawns" type="Node3D" parent="."]
+
+[node name="P1" type="Marker3D" parent="Spawns"]
+position = Vector3(-4.5, 0, 0)
+
+[node name="P2" type="Marker3D" parent="Spawns"]
+position = Vector3(4.5, 0, 0)
+
+[node name="Respawn" type="Marker3D" parent="."]
+position = Vector3(0, 7, 0)
+
+[node name="Scenery" type="Node3D" parent="."]
+
+[node name="TreeA" type="Node3D" parent="Scenery"]
+position = Vector3(-11, -6, -14)
+
+[node name="Trunk" type="MeshInstance3D" parent="Scenery/TreeA"]
+position = Vector3(0, 2, 0)
+mesh = SubResource("Mesh_trunk")
+surface_material_override/0 = SubResource("Material_trunk")
+
+[node name="Canopy" type="MeshInstance3D" parent="Scenery/TreeA"]
+position = Vector3(0, 5, 0)
+mesh = SubResource("Mesh_canopy")
+surface_material_override/0 = SubResource("Material_leaves")
+
+[node name="TreeB" type="Node3D" parent="Scenery"]
+position = Vector3(9, -7, -18)
+scale = Vector3(1.3, 1.3, 1.3)
+
+[node name="Trunk" type="MeshInstance3D" parent="Scenery/TreeB"]
+position = Vector3(0, 2, 0)
+mesh = SubResource("Mesh_trunk")
+surface_material_override/0 = SubResource("Material_trunk")
+
+[node name="Canopy" type="MeshInstance3D" parent="Scenery/TreeB"]
+position = Vector3(0, 5, 0)
+mesh = SubResource("Mesh_canopy")
+surface_material_override/0 = SubResource("Material_leaves")
+
+[node name="TreeC" type="Node3D" parent="Scenery"]
+position = Vector3(2, -8, -24)
+scale = Vector3(1.6, 1.6, 1.6)
+
+[node name="Trunk" type="MeshInstance3D" parent="Scenery/TreeC"]
+position = Vector3(0, 2, 0)
+mesh = SubResource("Mesh_trunk")
+surface_material_override/0 = SubResource("Material_trunk")
+
+[node name="Canopy" type="MeshInstance3D" parent="Scenery/TreeC"]
+position = Vector3(0, 5, 0)
+mesh = SubResource("Mesh_canopy")
+surface_material_override/0 = SubResource("Material_leaves")
+
+[node name="HillLeft" type="MeshInstance3D" parent="Scenery"]
+position = Vector3(-35, -32, -60)
+mesh = SubResource("Mesh_hill")
+surface_material_override/0 = SubResource("Material_hill")
+
+[node name="HillRight" type="MeshInstance3D" parent="Scenery"]
+position = Vector3(30, -30, -70)
+scale = Vector3(1.4, 1, 1)
+mesh = SubResource("Mesh_hill")
+surface_material_override/0 = SubResource("Material_hill")

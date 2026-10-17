@@ -1,0 +1,141 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://input/touch/touch_controls.gd" id="1_controls"]
+[ext_resource type="Script" path="res://ui/common/safe_area.gd" id="2_safe_area"]
+[ext_resource type="Script" path="res://input/touch/touch_stick.gd" id="3_stick"]
+[ext_resource type="Script" path="res://input/touch/virtual_button.gd" id="4_button"]
+
+[node name="TouchControls" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_controls")
+
+[node name="SafeArea" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_safe_area")
+
+[node name="Stick" type="Control" parent="SafeArea"]
+layout_mode = 1
+anchors_preset = 9
+anchor_right = 0.45
+anchor_bottom = 1.0
+offset_top = 110.0
+grow_vertical = 2
+script = ExtResource("3_stick")
+
+[node name="Attack" type="Control" parent="SafeArea"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -290.0
+offset_top = -190.0
+offset_right = -150.0
+offset_bottom = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("4_button")
+action = &"p1_attack"
+text = "Attack"
+color = Color(1, 0.45, 0.35, 0.3)
+pressed_color = Color(1, 0.45, 0.35, 0.6)
+
+[node name="Special" type="Control" parent="SafeArea"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -410.0
+offset_top = -150.0
+offset_right = -300.0
+offset_bottom = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("4_button")
+action = &"p1_special"
+text = "Special"
+color = Color(0.4, 0.6, 1, 0.3)
+pressed_color = Color(0.4, 0.6, 1, 0.6)
+font_size = 20
+
+[node name="Jump" type="Control" parent="SafeArea"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -270.0
+offset_right = -30.0
+offset_bottom = -150.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("4_button")
+action = &"p1_jump"
+text = "Jump"
+color = Color(0.45, 0.9, 0.5, 0.3)
+pressed_color = Color(0.45, 0.9, 0.5, 0.6)
+
+[node name="Shield" type="Control" parent="SafeArea"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -270.0
+offset_top = -320.0
+offset_right = -170.0
+offset_bottom = -220.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("4_button")
+action = &"p1_shield"
+text = "Shield"
+color = Color(0.85, 0.7, 1, 0.3)
+pressed_color = Color(0.85, 0.7, 1, 0.6)
+font_size = 18
+
+[node name="Pause" type="Control" parent="SafeArea"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -84.0
+offset_top = 14.0
+offset_right = -20.0
+offset_bottom = 78.0
+grow_horizontal = 0
+script = ExtResource("4_button")
+action = &"pause"
+text = "II"
+font_size = 22
+
+[node name="RotateHint" type="Label" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "Turn your device sideways to play"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

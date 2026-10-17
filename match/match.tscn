@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://match/match.gd" id="1_match"]
+[ext_resource type="PackedScene" path="res://stages/meadow/meadow.tscn" id="2_stage"]
+[ext_resource type="PackedScene" path="res://fighters/fighter.tscn" id="3_fighter"]
+[ext_resource type="Resource" path="res://fighters/roster/cat/cat.tres" id="4_cat"]
+[ext_resource type="Resource" path="res://fighters/roster/bear/bear.tres" id="5_bear"]
+[ext_resource type="Script" path="res://camera/fight_camera.gd" id="6_camera"]
+[ext_resource type="PackedScene" path="res://ui/hud/hud.tscn" id="7_hud"]
+[ext_resource type="PackedScene" path="res://ui/debug/training_info.tscn" id="8_info"]
+[ext_resource type="PackedScene" path="res://input/touch/touch_controls.tscn" id="9_touch"]
+[ext_resource type="Script" path="res://ui/pause/pause_menu.gd" id="10_pause"]
+
+[node name="Match" type="Node"]
+script = ExtResource("1_match")
+stage_scene = ExtResource("2_stage")
+fighter_scene = ExtResource("3_fighter")
+roster = Array[Resource]([ExtResource("4_cat"), ExtResource("5_bear")])
+
+[node name="Fighters" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="FightCamera" type="Camera3D" parent="."]
+unique_name_in_owner = true
+fov = 30.0
+script = ExtResource("6_camera")
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]
+unique_name_in_owner = true
+
+[node name="TrainingInfo" parent="." instance=ExtResource("8_info")]
+unique_name_in_owner = true
+
+[node name="TouchControls" parent="." instance=ExtResource("9_touch")]
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_pause")

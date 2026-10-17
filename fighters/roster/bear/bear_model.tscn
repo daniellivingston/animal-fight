@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/fighter_model.gd" id="1_model"]
+
+[sub_resource type="StandardMaterial3D" id="Material_fur"]
+albedo_color = Color(0.45, 0.3, 0.2, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_light"]
+albedo_color = Color(0.78, 0.62, 0.45, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Material_dark"]
+albedo_color = Color(0.08, 0.06, 0.05, 1)
+roughness = 0.5
+
+[sub_resource type="CapsuleMesh" id="Mesh_body"]
+radius = 0.62
+height = 2.0
+
+[sub_resource type="SphereMesh" id="Mesh_snout"]
+radius = 0.22
+height = 0.34
+
+[sub_resource type="SphereMesh" id="Mesh_ear"]
+radius = 0.17
+height = 0.3
+
+[sub_resource type="SphereMesh" id="Mesh_eye"]
+radius = 0.06
+height = 0.12
+
+[sub_resource type="SphereMesh" id="Mesh_belly"]
+radius = 0.45
+height = 1.1
+
+[node name="BearModel" type="Node3D"]
+script = ExtResource("1_model")
+
+[node name="Pivot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Body" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0, 1, 0)
+mesh = SubResource("Mesh_body")
+surface_material_override/0 = SubResource("Material_fur")
+
+[node name="Belly" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0.28, 0.8, 0)
+mesh = SubResource("Mesh_belly")
+surface_material_override/0 = SubResource("Material_light")
+
+[node name="Snout" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0.58, 1.45, 0)
+mesh = SubResource("Mesh_snout")
+surface_material_override/0 = SubResource("Material_light")
+
+[node name="Nose" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0.78, 1.5, 0)
+mesh = SubResource("Mesh_eye")
+surface_material_override/0 = SubResource("Material_dark")
+
+[node name="EyeL" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0.52, 1.66, 0.22)
+mesh = SubResource("Mesh_eye")
+surface_material_override/0 = SubResource("Material_dark")
+
+[node name="EyeR" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0.52, 1.66, -0.22)
+mesh = SubResource("Mesh_eye")
+surface_material_override/0 = SubResource("Material_dark")
+
+[node name="EarL" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0, 1.95, 0.36)
+mesh = SubResource("Mesh_ear")
+surface_material_override/0 = SubResource("Material_fur")
+
+[node name="EarR" type="MeshInstance3D" parent="Pivot"]
+position = Vector3(0, 1.95, -0.36)
+mesh = SubResource("Mesh_ear")
+surface_material_override/0 = SubResource("Material_fur")

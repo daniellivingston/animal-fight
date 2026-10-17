@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/fighter.gd" id="1_fighter"]
+[ext_resource type="Script" path="res://fighters/fighter_debug_draw.gd" id="2_debug"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_shield"]
+radius = 1.0
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Material_shield"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.35)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_platform"]
+top_radius = 0.9
+bottom_radius = 0.7
+height = 0.15
+
+[sub_resource type="StandardMaterial3D" id="Material_platform"]
+transparency = 1
+albedo_color = Color(0.7, 0.9, 1, 0.7)
+emission_enabled = true
+emission = Color(0.4, 0.7, 1, 1)
+
+[node name="Fighter" type="CharacterBody3D"]
+script = ExtResource("1_fighter")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Model" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="ShieldBubble" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+visible = false
+cast_shadow = 0
+mesh = SubResource("SphereMesh_shield")
+material_override = SubResource("Material_shield")
+
+[node name="RespawnPlatform" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08, 0)
+mesh = SubResource("CylinderMesh_platform")
+surface_material_override/0 = SubResource("Material_platform")
+
+[node name="DebugDraw" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_debug")
