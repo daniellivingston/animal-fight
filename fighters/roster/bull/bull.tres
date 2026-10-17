@@ -1,0 +1,49 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/bull/bull_model.tscn" id="1_26fmp"]
+[ext_resource type="Resource" path="res://fighters/roster/bear/bear_moveset.tres" id="2_xvim2"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_l21yf"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_nyyny"]
+
+[sub_resource type="Resource" id="Resource_sxnfb"]
+script = ExtResource("4_nyyny")
+weight = 135.0
+height = 18.0
+radius = 8.0
+walk_speed = 0.9
+initial_dash_speed = 1.9
+dash_frames = 15
+run_speed = 1.87
+traction = 0.13
+full_hop_height = 30.0
+short_hop_height = 14.0
+air_jump_height = 30.0
+jump_initial_x = 0.3
+jump_max_x = 1.4
+air_speed = 1.05
+air_acceleration_additional = 0.05
+air_friction = 0.0075
+gravity = 0.11
+fall_speed = 1.53
+hard_landing_frames = 6
+shield_radius = 14.0
+spot_dodge_intangible = Vector2i(3, 18)
+spot_dodge_frames = 28
+forward_roll_intangible = Vector2i(4, 16)
+forward_roll_frames = 32
+back_roll_intangible = Vector2i(5, 17)
+back_roll_frames = 37
+roll_distance = 32.0
+air_dodge_intangible = Vector2i(4, 32)
+air_dodge_frames = 46
+air_dodge_speed = 2.3
+ledge_roll_intangible = 24
+
+[resource]
+script = ExtResource("3_l21yf")
+display_name = "Bull"
+description = "Super-heavyweight (Bowser-like): the heaviest animal, grippy traction, huge hurtbox."
+color = Color(0.3, 0.22, 0.18, 1)
+model_scene = ExtResource("1_26fmp")
+stats = SubResource("Resource_sxnfb")
+moveset = ExtResource("2_xvim2")

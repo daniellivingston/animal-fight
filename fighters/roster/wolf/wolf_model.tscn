@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_8nl5p"]
+[ext_resource type="PackedScene" path="res://fighters/roster/wolf/wolf.gltf" id="2_oxoje"]
+
+[node name="WolfModel" type="Node3D" unique_id=1034193721]
+script = ExtResource("1_8nl5p")
+land = &"Jump_ToIdle"
+crouch = &"Idle_2_HeadLow"
+attack = &"Attack"
+back_attack = &""
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1472984399]
+unique_name_in_owner = true
+
+[node name="wolf" parent="Pivot" unique_id=1782453965 instance=ExtResource("2_oxoje")]
+transform = Transform3D(-1.7934466e-08, 0, 0.41029277, 0, 0.41029277, 0, -0.41029277, 0, -1.7934466e-08, 0, 0.004186096, 0)

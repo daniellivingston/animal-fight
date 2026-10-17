@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/fox/fox_model.tscn" id="1_f1527"]
+[ext_resource type="Resource" path="res://fighters/roster/cat/cat_moveset.tres" id="2_1g1qh"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_e2elp"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_8yo3q"]
+
+[sub_resource type="Resource" id="Resource_srefm"]
+script = ExtResource("4_8yo3q")
+weight = 77.0
+height = 10.5
+radius = 5.0
+walk_speed = 1.6
+walk_acceleration = 0.18
+initial_dash_speed = 2.2
+dash_frames = 11
+run_speed = 2.402
+run_acceleration = 0.12
+run_turn_frames = 12
+traction = 0.122
+full_hop_height = 36.0
+short_hop_height = 16.5
+air_jump_height = 37.0
+air_speed = 1.11
+gravity = 0.23
+fall_speed = 2.1
+shield_radius = 9.0
+roll_distance = 30.0
+
+[resource]
+script = ExtResource("3_e2elp")
+display_name = "Fox"
+description = "Speedster (Fox-like): very fast on the ground, falls hard and fast, light enough to launch early."
+color = Color(0.93, 0.45, 0.15, 1)
+model_scene = ExtResource("1_f1527")
+stats = SubResource("Resource_srefm")
+moveset = ExtResource("2_1g1qh")

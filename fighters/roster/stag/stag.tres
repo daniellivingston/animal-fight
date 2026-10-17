@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/stag/stag_model.tscn" id="1_xsgkq"]
+[ext_resource type="Resource" path="res://fighters/roster/bear/bear_moveset.tres" id="2_d6ji5"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_40vmf"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_36gyj"]
+
+[sub_resource type="Resource" id="Resource_r7og8"]
+script = ExtResource("4_36gyj")
+weight = 118.0
+height = 17.0
+radius = 6.0
+walk_speed = 0.95
+initial_dash_speed = 1.87
+run_speed = 1.65
+full_hop_height = 33.0
+short_hop_height = 15.5
+air_jump_height = 33.0
+jump_initial_x = 0.3
+jump_max_x = 1.4
+air_speed = 0.83
+air_acceleration_additional = 0.04
+gravity = 0.13
+fall_speed = 1.83
+hard_landing_frames = 6
+shield_radius = 12.0
+spot_dodge_intangible = Vector2i(3, 18)
+spot_dodge_frames = 28
+forward_roll_intangible = Vector2i(4, 16)
+forward_roll_frames = 32
+back_roll_intangible = Vector2i(5, 17)
+back_roll_frames = 37
+roll_distance = 32.0
+air_dodge_intangible = Vector2i(4, 32)
+air_dodge_frames = 46
+air_dodge_speed = 2.3
+ledge_roll_intangible = 24
+
+[resource]
+script = ExtResource("3_40vmf")
+display_name = "Stag"
+description = "Slow powerhouse (Ganondorf-like): heavy, falls fast, poor air speed, devastating hits."
+color = Color(0.6, 0.38, 0.22, 1)
+model_scene = ExtResource("1_xsgkq")
+stats = SubResource("Resource_r7og8")
+moveset = ExtResource("2_d6ji5")

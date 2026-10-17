@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/alpaca/alpaca_model.tscn" id="1_i4a1t"]
+[ext_resource type="Resource" path="res://fighters/roster/cat/cat_moveset.tres" id="2_bp211"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_rsvgi"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_1kpc0"]
+
+[sub_resource type="Resource" id="Resource_rh8bx"]
+script = ExtResource("4_1kpc0")
+weight = 90.0
+height = 17.0
+radius = 5.5
+walk_speed = 1.0
+initial_dash_speed = 1.75
+run_speed = 1.6
+full_hop_height = 30.0
+short_hop_height = 14.0
+air_jump_height = 26.0
+jump_count = 4
+air_speed = 1.25
+air_acceleration_additional = 0.09
+gravity = 0.07
+fall_speed = 1.15
+shield_radius = 11.0
+
+[resource]
+script = ExtResource("3_rsvgi")
+display_name = "Alpaca"
+description = "Multi-jumper (Jigglypuff-lite): four jumps and great air control, slow on the ground and floaty."
+color = Color(0.92, 0.88, 0.8, 1)
+model_scene = ExtResource("1_i4a1t")
+stats = SubResource("Resource_rh8bx")
+moveset = ExtResource("2_bp211")

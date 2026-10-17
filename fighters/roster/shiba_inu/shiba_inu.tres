@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/shiba_inu/shiba_inu_model.tscn" id="1_72aow"]
+[ext_resource type="Resource" path="res://fighters/roster/cat/cat_moveset.tres" id="2_38a7t"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_5yomb"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_3nnji"]
+
+[sub_resource type="Resource" id="Resource_05loi"]
+script = ExtResource("4_3nnji")
+weight = 79.0
+height = 10.0
+radius = 5.0
+walk_speed = 1.302
+initial_dash_speed = 2.134
+dash_frames = 9
+run_speed = 2.039
+traction = 0.105
+full_hop_height = 34.0
+short_hop_height = 16.5
+air_jump_height = 34.0
+air_speed = 0.957
+air_acceleration_additional = 0.08
+gravity = 0.095
+fall_speed = 1.55
+shield_radius = 9.0
+
+[resource]
+script = ExtResource("3_5yomb")
+display_name = "Shiba Inu"
+description = "Small and slippery (Pikachu-like): tiny hurtbox, snappy dash dances, but light."
+color = Color(0.9, 0.62, 0.3, 1)
+model_scene = ExtResource("1_72aow")
+stats = SubResource("Resource_05loi")
+moveset = ExtResource("2_38a7t")

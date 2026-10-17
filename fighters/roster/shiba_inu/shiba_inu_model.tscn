@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_nfd8t"]
+[ext_resource type="PackedScene" path="res://fighters/roster/shiba_inu/shiba_inu.gltf" id="2_ycusq"]
+
+[node name="ShibaInuModel" type="Node3D" unique_id=983788118]
+script = ExtResource("1_nfd8t")
+land = &"Jump_ToIdle"
+crouch = &"Idle_2_HeadLow"
+attack = &"Attack"
+back_attack = &""
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1258268980]
+unique_name_in_owner = true
+
+[node name="shiba_inu" parent="Pivot" unique_id=253648092 instance=ExtResource("2_ycusq")]
+transform = Transform3D(-1.4120501e-08, 0, 0.3230394, 0, 0.3230394, 0, -0.3230394, 0, -1.4120501e-08, 0, -0.0014295568, 0)

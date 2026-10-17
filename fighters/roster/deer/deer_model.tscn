@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_nanit"]
+[ext_resource type="PackedScene" path="res://fighters/roster/deer/deer.gltf" id="2_1b7me"]
+
+[node name="DeerModel" type="Node3D" unique_id=1577026570]
+script = ExtResource("1_nanit")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=945043207]
+unique_name_in_owner = true
+
+[node name="deer" parent="Pivot" unique_id=1319017533 instance=ExtResource("2_1b7me")]
+transform = Transform3D(-1.5340612e-08, 0, 0.3509523, 0, 0.3509523, 0, -0.3509523, 0, -1.5340612e-08, 0, 0.0046000476, 0)

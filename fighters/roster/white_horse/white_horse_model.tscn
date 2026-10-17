@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_yh0ef"]
+[ext_resource type="PackedScene" path="res://fighters/roster/white_horse/white_horse.gltf" id="2_pao1x"]
+
+[node name="WhiteHorseModel" type="Node3D" unique_id=1457808826]
+script = ExtResource("1_yh0ef")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1133871090]
+unique_name_in_owner = true
+
+[node name="white_horse" parent="Pivot" unique_id=2087498937 instance=ExtResource("2_pao1x")]
+transform = Transform3D(-1.7216534e-08, 0, 0.3938684, 0, 0.3938684, 0, -0.3938684, 0, -1.7216534e-08, 0, 0.0044189226, 0)

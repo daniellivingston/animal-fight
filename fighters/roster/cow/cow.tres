@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/cow/cow_model.tscn" id="1_ul43u"]
+[ext_resource type="Resource" path="res://fighters/roster/bear/bear_moveset.tres" id="2_n6wv2"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_c56q6"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_or7a3"]
+
+[sub_resource type="Resource" id="Resource_awncs"]
+script = ExtResource("4_or7a3")
+weight = 127.0
+height = 17.0
+radius = 7.5
+walk_speed = 0.85
+initial_dash_speed = 1.75
+run_speed = 1.6
+full_hop_height = 37.0
+short_hop_height = 17.5
+air_jump_height = 30.0
+jump_count = 3
+jump_initial_x = 0.3
+jump_max_x = 1.4
+air_speed = 0.85
+air_acceleration_additional = 0.04
+gravity = 0.095
+fall_speed = 1.28
+hard_landing_frames = 6
+shield_radius = 13.0
+spot_dodge_intangible = Vector2i(3, 18)
+spot_dodge_frames = 28
+forward_roll_intangible = Vector2i(4, 16)
+forward_roll_frames = 32
+back_roll_intangible = Vector2i(5, 17)
+back_roll_frames = 37
+roll_distance = 32.0
+air_dodge_intangible = Vector2i(4, 32)
+air_dodge_frames = 46
+air_dodge_speed = 2.3
+ledge_roll_intangible = 24
+
+[resource]
+script = ExtResource("3_c56q6")
+display_name = "Cow"
+description = "Floaty super-heavy (King Dedede-like): three jumps and slow fall, very hard to KO, slow everywhere."
+color = Color(0.9, 0.9, 0.9, 1)
+model_scene = ExtResource("1_ul43u")
+stats = SubResource("Resource_awncs")
+moveset = ExtResource("2_n6wv2")

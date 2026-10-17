@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_s1e44"]
+[ext_resource type="PackedScene" path="res://fighters/roster/husky/husky.gltf" id="2_bth5u"]
+
+[node name="HuskyModel" type="Node3D" unique_id=1132507338]
+script = ExtResource("1_s1e44")
+land = &"Jump_ToIdle"
+crouch = &"Idle_2_HeadLow"
+attack = &"Attack"
+back_attack = &""
+
+[node name="Pivot" type="Node3D" parent="." unique_id=142123056]
+unique_name_in_owner = true
+
+[node name="husky" parent="Pivot" unique_id=1115535151 instance=ExtResource("2_bth5u")]
+transform = Transform3D(-1.5067842e-08, 0, 0.34471205, 0, 0.34471205, 0, -0.34471205, 0, -1.5067842e-08, 0, -0.0010476494, 0)

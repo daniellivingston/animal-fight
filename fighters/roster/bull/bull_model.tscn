@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_w8xd1"]
+[ext_resource type="PackedScene" path="res://fighters/roster/bull/bull.gltf" id="2_pvrmo"]
+
+[node name="BullModel" type="Node3D" unique_id=588431042]
+script = ExtResource("1_w8xd1")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=514123151]
+unique_name_in_owner = true
+
+[node name="bull" parent="Pivot" unique_id=1630606223 instance=ExtResource("2_pvrmo")]
+transform = Transform3D(-1.7154157e-08, 0, 0.3924414, 0, 0.3924414, 0, -0.3924414, 0, -1.7154157e-08, 0, 0.021782886, 0)

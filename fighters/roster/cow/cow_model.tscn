@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_bqwah"]
+[ext_resource type="PackedScene" path="res://fighters/roster/cow/cow.gltf" id="2_yeysa"]
+
+[node name="CowModel" type="Node3D" unique_id=234909054]
+script = ExtResource("1_bqwah")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=629066276]
+unique_name_in_owner = true
+
+[node name="cow" parent="Pivot" unique_id=614021999 instance=ExtResource("2_yeysa")]
+transform = Transform3D(-1.6201149e-08, 0, 0.3706391, 0, 0.3706391, 0, -0.3706391, 0, -1.6201149e-08, 0, 0.020572726, 0)

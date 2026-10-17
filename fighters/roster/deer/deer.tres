@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/deer/deer_model.tscn" id="1_66ref"]
+[ext_resource type="Resource" path="res://fighters/roster/cat/cat_moveset.tres" id="2_4nmey"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_lhbvx"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_aji6h"]
+
+[sub_resource type="Resource" id="Resource_qiutn"]
+script = ExtResource("4_aji6h")
+weight = 85.0
+radius = 5.5
+walk_speed = 1.2
+initial_dash_speed = 2.0
+run_speed = 1.95
+full_hop_height = 46.0
+short_hop_height = 21.0
+air_jump_height = 48.0
+air_speed = 1.15
+air_acceleration_additional = 0.06
+air_friction = 0.01
+gravity = 0.075
+fall_speed = 1.3
+
+[resource]
+script = ExtResource("3_lhbvx")
+display_name = "Deer"
+description = "Floaty leaper (Peach-like): huge jumps and slow fall, strong in the air, easy to juggle."
+color = Color(0.75, 0.5, 0.3, 1)
+model_scene = ExtResource("1_66ref")
+stats = SubResource("Resource_qiutn")
+moveset = ExtResource("2_4nmey")

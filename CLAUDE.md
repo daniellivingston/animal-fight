@@ -25,6 +25,8 @@ Architecture and layout are in README.md; ported mechanics in docs/physics.md; s
   ported (or approximated) in docs/physics.md.
 - `FighterStats` defaults are Mario's Ultimate stats, and .tres files store only differences:
   changing a default changes every character that relies on it.
+- Models are visual only. `AnimatedFighterModel` steps its `AnimationPlayer` manually from `sync()` (one
+  simulation frame per call), so never switch it back to idle/physics processing or read animation state in gameplay.
 - Static typing everywhere; tabs; `##` doc comments on public API. Avoid naming enums after
   native classes (e.g. `Button`): GDScript rejects it.
 - Commit `*.uid` files; `.godot/` and `build/` are ignored.

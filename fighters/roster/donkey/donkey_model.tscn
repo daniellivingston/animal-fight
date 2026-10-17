@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_7wxsh"]
+[ext_resource type="PackedScene" path="res://fighters/roster/donkey/donkey.gltf" id="2_uuhfi"]
+
+[node name="DonkeyModel" type="Node3D" unique_id=2023783451]
+script = ExtResource("1_7wxsh")
+
+[node name="Pivot" type="Node3D" parent="." unique_id=271912010]
+unique_name_in_owner = true
+
+[node name="donkey" parent="Pivot" unique_id=66731805 instance=ExtResource("2_uuhfi")]
+transform = Transform3D(-1.6583371e-08, 0, 0.37938333, 0, 0.37938333, 0, -0.37938333, 0, -1.6583371e-08, 0, -0.0018927946, 0)

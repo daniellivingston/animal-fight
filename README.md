@@ -2,7 +2,8 @@
 
 A Smash Bros-style platform fighter with animals, built with **Godot 4.7** (GDScript). It targets desktop, mobile and the web, and touch controls are first-class.
 
-> Current state: the foundation. One stage (Meadow: a main platform with two soft platforms above it), two characters with different stats and full movesets (Cat, an all-rounder; Bear, a heavyweight), Smash Ultimate physics and combat, training tools, and desktop, gamepad and touch controls.
+> Current state: the foundation. One stage (Meadow: a main platform with two soft platforms above it), 14 selectable characters, Smash Ultimate physics and combat, training tools, and desktop, gamepad and touch controls.
+> Cat and Bear are primitive placeholders with their own movesets. The other 12 (Fox, Wolf, Husky, Shiba Inu, Deer, Stag, Alpaca, Donkey, Horse, White Horse, Cow, Bull) are rigged, animated low-poly models with their own stats; for now they share Cat's or Bear's moveset (see [docs/fighter-stats.md](docs/fighter-stats.md#the-animal-roster)).
 
 ## Running
 
@@ -60,9 +61,12 @@ combat/          SmashFormulas (all ported constants and formulas), HitboxData, 
                  HitResolver (hit detection), StaleMoveQueue, HitInfo
 core/            Units (Smash units <-> meters), PhysicsLayers, DebugSettings
 docs/            physics.md (what's ported and how), fighter-stats.md (every stat, ranges)
-fighters/        Fighter (CharacterBody3D), FighterStats, Moveset, FighterData, FighterModel
+fighters/        Fighter (CharacterBody3D), FighterStats, Moveset, FighterData,
+                 FighterModel (placeholder posing), AnimatedFighterModel (rigged glTF models)
   states/        One FighterState per Smash action (idle, dash, jumpsquat, hitstun, ledge, ...)
-  roster/        One folder per character: <name>.tres (stats + moves) and <name>_model.tscn
+  roster/        One folder per character: <name>.tres (stats), <name>_model.tscn and, for
+                 animals, <name>.gltf. cat/ and bear/ also hold the shared <name>_moveset.tres.
+    _licenses/   Licenses of third-party models
 input/           GameInput autoload (device tracking), InputTracker (buffer, flicks),
                  controllers (PlayerController, DummyController), InputActions
   touch/         TouchStick, VirtualButton, touch controls scene
@@ -92,7 +96,8 @@ Fighters never run their own `_physics_process`. The order is fixed and determin
 - **Data-driven characters.** A character is a `FighterData` resource with a model scene, `FighterStats` and a `Moveset` of `MoveData` / `HitboxData`. No character-specific code; add one in the inspector.
 - **States as small classes.** `FighterState` subclasses (`fighters/states/`) hold behaviour. `Fighter` holds physical state and shared helpers (`try_jump`, `try_ground_attack`, `apply_air_drift`, ...). States can't drift apart in how they handle a jump or an aerial.
 - **Controllers drive fighters.** `FighterController.poll()` returns an `InputFrame`. `PlayerController` reads the Input Map (keyboard, gamepad and touch all press the same `p1_*` actions); `DummyController` is the training dummy. A CPU or a network peer would be another controller.
-- **Visuals are separate from gameplay.** `FighterModel` poses the model from the fighter's state (squash, lean, tumble spin, hit flash, intangibility tint). A rigged model would use the same `sync()` call to drive an AnimationTree.
+- **Visuals are separate from gameplay.** `FighterModel.sync()` poses the model from the fighter's state each frame: facing, tumble spin, hit flash, intangibility tint, and squash/lean for the placeholder models.
+  `AnimatedFighterModel` instead picks an animation per state and steps the glTF's `AnimationPlayer` manually, one simulation frame at a time, so animations freeze in hitlag and attacks stretch to the move's length.
 
 ### Rendering & physics
 
@@ -127,6 +132,10 @@ Other presets (Windows, macOS, Linux, Android, iOS) are set up with bundle ids. 
 - Grabs and throws, plus neutral, side and down specials.
 - Ultimate's balloon knockback and parry (see [docs/physics.md](docs/physics.md#not-ported-yet)).
 - A character select screen and match rules (stocks, timer, results).
-- Rigged animal models with animations driven from `FighterModel.sync()`.
+- Per-animal movesets for the 12 animated animals, and hurtboxes that fit four-legged bodies (today's vertical capsule covers the torso; heads and tails stick out).
 - A CPU controller.
 - Rollback netcode: the simulation is already frame-stepped and ordered. It would need state snapshots and fixed-point or verified-deterministic math.
+
+## Credits
+
+The animated animals are from [Ultimate Animated Animals](https://quaternius.com/packs/ultimateanimatedanimals.html) by Quaternius, released under CC0 (license in `fighters/roster/_licenses/`).

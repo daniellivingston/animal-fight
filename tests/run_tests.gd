@@ -9,6 +9,7 @@ extends SceneTree
 
 const CAT := preload("res://fighters/roster/cat/cat.tres")
 const BEAR := preload("res://fighters/roster/bear/bear.tres")
+const ROSTER_DIR := "res://fighters/roster/"
 const STAGE := preload("res://stages/meadow/meadow.tscn")
 const FIGHTER := preload("res://fighters/fighter.tscn")
 
@@ -53,12 +54,8 @@ func _run() -> void:
 	_test_formulas()
 	_test_stale_queue()
 	_test_input_tracker()
-	await _test_jump_heights(CAT)
-	await _test_jump_heights(BEAR)
+	await _test_roster()
 	await _test_short_hop_airtime()
-	await _test_ground_speeds(CAT)
-	await _test_ground_speeds(BEAR)
-	await _test_fall_speeds(CAT)
 	await _test_soft_platforms()
 	await _test_ledge_grab()
 	await _test_knockback_and_weight()
@@ -182,6 +179,39 @@ func _test_input_tracker() -> void:
 	_check(buffered.buffered(InputTracker.Btn.ATTACK), "press is buffered for 9 frames")
 	buffered.feed(_input())
 	_check(not buffered.buffered(InputTracker.Btn.ATTACK), "press expires after the buffer window")
+
+
+## Every character in fighters/roster/ (<name>/<name>.tres): complete model, and
+## stats that produce their motion. (match.tscn can't be loaded here: it needs
+## the GameInput autoload, which --script runs don't load.)
+func _test_roster() -> void:
+	var match_text := FileAccess.get_file_as_string("res://match/match.tscn")
+	var roster: Array[FighterData] = []
+	for dir in DirAccess.get_directories_at(ROSTER_DIR):
+		var path := ROSTER_DIR + "%s/%s.tres" % [dir, dir]
+		if ResourceLoader.exists(path):
+			roster.append(load(path) as FighterData)
+			_check(match_text.contains('path="%s"' % path), "%s is selectable (listed in match.tscn)" % dir)
+	_check(roster.size() >= 2, "found %d roster characters" % roster.size())
+	for data in roster:
+		_test_model(data)
+		await _test_jump_heights(data)
+		await _test_ground_speeds(data)
+		await _test_fall_speeds(data)
+
+
+func _test_model(data: FighterData) -> void:
+	var model := data.model_scene.instantiate() if data.model_scene else null
+	_check(model is FighterModel, "%s has a FighterModel scene" % data.display_name)
+	var animated := model as AnimatedFighterModel
+	if animated:
+		var players := animated.find_children("*", "AnimationPlayer", true, false)
+		_check(players.size() == 1, "%s model has one AnimationPlayer" % data.display_name)
+		var player := players.front() as AnimationPlayer
+		for anim in animated.animation_names():
+			_check(player != null and player.has_animation(anim), "%s model has animation %s" % [data.display_name, anim])
+	if model:
+		model.free()
 
 
 func _test_jump_heights(data: FighterData) -> void:

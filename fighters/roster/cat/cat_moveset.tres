@@ -1,0 +1,346 @@
+[gd_resource type="Resource" script_class="Moveset" format=3]
+
+[ext_resource type="Script" path="res://combat/hitbox_data.gd" id="1_qaduw"]
+[ext_resource type="Script" path="res://combat/move_data.gd" id="2_4piba"]
+[ext_resource type="Script" path="res://fighters/moveset.gd" id="3_34fpd"]
+
+[sub_resource type="Resource" id="Resource_42nad"]
+script = ExtResource("1_qaduw")
+start_frame = 6
+end_frame = 8
+offset = Vector2(-8, 8)
+radius = 5.0
+damage = 10.5
+base_knockback = 10.0
+reverse = true
+
+[sub_resource type="Resource" id="Resource_raonc"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 9
+end_frame = 12
+offset = Vector2(-7, 8)
+radius = 4.5
+damage = 7.0
+base_knockback = 10.0
+reverse = true
+
+[sub_resource type="Resource" id="Resource_vqn0a"]
+script = ExtResource("2_4piba")
+display_name = "Back Kick"
+total_frames = 33
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_42nad"), SubResource("Resource_raonc")])
+landing_lag = 6
+autocancel_before = 3
+autocancel_after = 20
+
+[sub_resource type="Resource" id="Resource_3wr8m"]
+script = ExtResource("1_qaduw")
+start_frame = 6
+end_frame = 9
+offset = Vector2(8, 6)
+radius = 4.5
+damage = 8.0
+angle = 70
+base_knockback = 60.0
+knockback_growth = 60.0
+
+[sub_resource type="Resource" id="Resource_jpuh6"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 10
+end_frame = 15
+offset = Vector2(7, 6)
+angle = 80
+base_knockback = 50.0
+knockback_growth = 50.0
+
+[sub_resource type="Resource" id="Resource_0fv10"]
+script = ExtResource("2_4piba")
+display_name = "Pounce"
+total_frames = 38
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_3wr8m"), SubResource("Resource_jpuh6")])
+motion_start = 1
+motion_end = 12
+motion_velocity = Vector2(1.6, 0)
+
+[sub_resource type="Resource" id="Resource_hqtjp"]
+script = ExtResource("1_qaduw")
+start_frame = 8
+end_frame = 10
+offset = Vector2(0, 0)
+radius = 5.0
+damage = 9.0
+angle = 60
+base_knockback = 40.0
+knockback_growth = 70.0
+
+[sub_resource type="Resource" id="Resource_pu4xl"]
+script = ExtResource("2_4piba")
+display_name = "Stomp"
+total_frames = 40
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_hqtjp")])
+landing_lag = 12
+autocancel_before = 3
+autocancel_after = 33
+
+[sub_resource type="Resource" id="Resource_hqoss"]
+script = ExtResource("1_qaduw")
+start_frame = 5
+end_frame = 6
+offset = Vector2(9, 2)
+radius = 4.5
+damage = 10.0
+angle = 30
+
+[sub_resource type="Resource" id="Resource_hmqjq"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 12
+end_frame = 13
+offset = Vector2(-9, 2)
+radius = 4.5
+damage = 12.0
+angle = 30
+reverse = true
+
+[sub_resource type="Resource" id="Resource_aa55d"]
+script = ExtResource("2_4piba")
+display_name = "Split Kick"
+total_frames = 47
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_hqoss"), SubResource("Resource_hmqjq")])
+charge_frame = 3
+
+[sub_resource type="Resource" id="Resource_e80qb"]
+script = ExtResource("1_qaduw")
+start_frame = 5
+end_frame = 7
+offset = Vector2(8, 2)
+radius = 3.5
+damage = 6.0
+angle = 80
+base_knockback = 40.0
+knockback_growth = 60.0
+
+[sub_resource type="Resource" id="Resource_xsikn"]
+script = ExtResource("2_4piba")
+display_name = "Tail Sweep"
+total_frames = 20
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_e80qb")])
+
+[sub_resource type="Resource" id="Resource_shdwk"]
+script = ExtResource("1_qaduw")
+start_frame = 16
+end_frame = 18
+offset = Vector2(8, 10)
+radius = 5.0
+damage = 14.0
+angle = 280
+base_knockback = 30.0
+knockback_growth = 75.0
+
+[sub_resource type="Resource" id="Resource_r78hs"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 16
+end_frame = 18
+offset = Vector2(4, 6)
+damage = 10.0
+knockback_growth = 90.0
+
+[sub_resource type="Resource" id="Resource_7vl2l"]
+script = ExtResource("2_4piba")
+display_name = "Hammer Paw"
+total_frames = 59
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_shdwk"), SubResource("Resource_r78hs")])
+landing_lag = 17
+autocancel_before = 3
+autocancel_after = 52
+
+[sub_resource type="Resource" id="Resource_o0t1d"]
+script = ExtResource("1_qaduw")
+start_frame = 15
+end_frame = 16
+offset = Vector2(10, 9)
+radius = 5.0
+damage = 17.8
+base_knockback = 25.0
+knockback_growth = 99.0
+
+[sub_resource type="Resource" id="Resource_iylln"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 15
+end_frame = 16
+offset = Vector2(5, 9)
+damage = 14.7
+base_knockback = 25.0
+knockback_growth = 92.0
+
+[sub_resource type="Resource" id="Resource_rqav2"]
+script = ExtResource("2_4piba")
+display_name = "Haymaker"
+total_frames = 49
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_o0t1d"), SubResource("Resource_iylln")])
+charge_frame = 9
+
+[sub_resource type="Resource" id="Resource_tsjkm"]
+script = ExtResource("1_qaduw")
+start_frame = 5
+end_frame = 7
+offset = Vector2(9, 7)
+damage = 7.0
+base_knockback = 8.0
+
+[sub_resource type="Resource" id="Resource_q5cb3"]
+script = ExtResource("2_4piba")
+display_name = "Swipe"
+total_frames = 26
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_tsjkm")])
+
+[sub_resource type="Resource" id="Resource_h1owr"]
+script = ExtResource("1_qaduw")
+start_frame = 2
+end_frame = 3
+offset = Vector2(7, 8)
+radius = 3.5
+damage = 3.0
+knockback_growth = 40.0
+
+[sub_resource type="Resource" id="Resource_1co2k"]
+script = ExtResource("2_4piba")
+display_name = "Paw Jab"
+total_frames = 17
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_h1owr")])
+
+[sub_resource type="Resource" id="Resource_lvb2m"]
+script = ExtResource("1_qaduw")
+start_frame = 3
+end_frame = 6
+offset = Vector2(0, 8)
+radius = 7.0
+damage = 8.0
+base_knockback = 10.0
+
+[sub_resource type="Resource" id="Resource_n2ihc"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 7
+end_frame = 27
+offset = Vector2(0, 8)
+radius = 6.0
+base_knockback = 10.0
+
+[sub_resource type="Resource" id="Resource_6df48"]
+script = ExtResource("2_4piba")
+display_name = "Curl Kick"
+total_frames = 45
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_lvb2m"), SubResource("Resource_n2ihc")])
+landing_lag = 6
+autocancel_before = 3
+autocancel_after = 36
+
+[sub_resource type="Resource" id="Resource_7o7i1"]
+script = ExtResource("1_qaduw")
+start_frame = 4
+end_frame = 8
+offset = Vector2(1, 15)
+radius = 5.5
+damage = 7.0
+angle = 70
+base_knockback = 30.0
+knockback_growth = 120.0
+
+[sub_resource type="Resource" id="Resource_53c3v"]
+script = ExtResource("2_4piba")
+display_name = "Flip Kick"
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_7o7i1")])
+landing_lag = 5
+autocancel_before = 3
+autocancel_after = 23
+
+[sub_resource type="Resource" id="Resource_c23ql"]
+script = ExtResource("1_qaduw")
+start_frame = 9
+end_frame = 12
+offset = Vector2(2, 14)
+radius = 5.5
+damage = 14.0
+angle = 89
+base_knockback = 32.0
+knockback_growth = 97.0
+
+[sub_resource type="Resource" id="Resource_7bltr"]
+script = ExtResource("2_4piba")
+display_name = "Headbutt"
+total_frames = 44
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_c23ql")])
+charge_frame = 5
+
+[sub_resource type="Resource" id="Resource_m2vum"]
+script = ExtResource("1_qaduw")
+start_frame = 3
+end_frame = 6
+offset = Vector2(4, 12)
+radius = 5.0
+angle = 80
+base_knockback = 60.0
+knockback_growth = 70.0
+
+[sub_resource type="Resource" id="Resource_pu7aa"]
+script = ExtResource("1_qaduw")
+id = 1
+start_frame = 7
+end_frame = 12
+offset = Vector2(2, 15)
+damage = 3.0
+angle = 80
+base_knockback = 50.0
+knockback_growth = 60.0
+
+[sub_resource type="Resource" id="Resource_820xo"]
+script = ExtResource("2_4piba")
+display_name = "Skyward Pounce"
+total_frames = 38
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_m2vum"), SubResource("Resource_pu7aa")])
+landing_lag = 20
+motion_start = 3
+motion_end = 12
+motion_velocity = Vector2(0.6, 2.4)
+motion_steer = 0.5
+ends_in_helpless = true
+ledge_grab_frame = 10
+reverse_frame = 2
+
+[sub_resource type="Resource" id="Resource_f54sf"]
+script = ExtResource("1_qaduw")
+start_frame = 5
+end_frame = 11
+offset = Vector2(2, 14)
+radius = 5.0
+damage = 5.5
+angle = 96
+base_knockback = 30.0
+knockback_growth = 120.0
+
+[sub_resource type="Resource" id="Resource_df7bj"]
+script = ExtResource("2_4piba")
+display_name = "Ear Flick"
+hitboxes = Array[ExtResource("1_qaduw")]([SubResource("Resource_f54sf")])
+
+[resource]
+script = ExtResource("3_34fpd")
+jab = SubResource("Resource_1co2k")
+forward_tilt = SubResource("Resource_q5cb3")
+up_tilt = SubResource("Resource_df7bj")
+down_tilt = SubResource("Resource_xsikn")
+dash_attack = SubResource("Resource_0fv10")
+forward_smash = SubResource("Resource_rqav2")
+up_smash = SubResource("Resource_7bltr")
+down_smash = SubResource("Resource_aa55d")
+neutral_air = SubResource("Resource_6df48")
+forward_air = SubResource("Resource_7vl2l")
+back_air = SubResource("Resource_vqn0a")
+up_air = SubResource("Resource_53c3v")
+down_air = SubResource("Resource_pu4xl")
+up_special = SubResource("Resource_820xo")

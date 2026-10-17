@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://fighters/animated_fighter_model.gd" id="1_tfbk2"]
+[ext_resource type="PackedScene" path="res://fighters/roster/fox/fox.gltf" id="2_5r5iv"]
+
+[node name="FoxModel" type="Node3D" unique_id=970613872]
+script = ExtResource("1_tfbk2")
+land = &"Jump_ToIdle"
+crouch = &"Idle_2_HeadLow"
+attack = &"Attack"
+back_attack = &""
+
+[node name="Pivot" type="Node3D" parent="." unique_id=1301495786]
+unique_name_in_owner = true
+
+[node name="fox" parent="Pivot" unique_id=517640457 instance=ExtResource("2_5r5iv")]
+transform = Transform3D(-1.7146862e-08, 0, 0.39227447, 0, 0.39227447, 0, -0.39227447, 0, -1.7146862e-08, 0, 0.00075734, 0)

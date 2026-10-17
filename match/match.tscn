@@ -5,6 +5,18 @@
 [ext_resource type="PackedScene" path="res://fighters/fighter.tscn" id="3_fighter"]
 [ext_resource type="Resource" path="res://fighters/roster/cat/cat.tres" id="4_cat"]
 [ext_resource type="Resource" path="res://fighters/roster/bear/bear.tres" id="5_bear"]
+[ext_resource type="Resource" path="res://fighters/roster/fox/fox.tres" id="roster_fox"]
+[ext_resource type="Resource" path="res://fighters/roster/wolf/wolf.tres" id="roster_wolf"]
+[ext_resource type="Resource" path="res://fighters/roster/husky/husky.tres" id="roster_husky"]
+[ext_resource type="Resource" path="res://fighters/roster/shiba_inu/shiba_inu.tres" id="roster_shiba_inu"]
+[ext_resource type="Resource" path="res://fighters/roster/deer/deer.tres" id="roster_deer"]
+[ext_resource type="Resource" path="res://fighters/roster/stag/stag.tres" id="roster_stag"]
+[ext_resource type="Resource" path="res://fighters/roster/alpaca/alpaca.tres" id="roster_alpaca"]
+[ext_resource type="Resource" path="res://fighters/roster/donkey/donkey.tres" id="roster_donkey"]
+[ext_resource type="Resource" path="res://fighters/roster/horse/horse.tres" id="roster_horse"]
+[ext_resource type="Resource" path="res://fighters/roster/white_horse/white_horse.tres" id="roster_white_horse"]
+[ext_resource type="Resource" path="res://fighters/roster/cow/cow.tres" id="roster_cow"]
+[ext_resource type="Resource" path="res://fighters/roster/bull/bull.tres" id="roster_bull"]
 [ext_resource type="Script" path="res://camera/fight_camera.gd" id="6_camera"]
 [ext_resource type="PackedScene" path="res://ui/hud/hud.tscn" id="7_hud"]
 [ext_resource type="PackedScene" path="res://ui/debug/training_info.tscn" id="8_info"]
@@ -15,7 +27,7 @@
 script = ExtResource("1_match")
 stage_scene = ExtResource("2_stage")
 fighter_scene = ExtResource("3_fighter")
-roster = Array[Resource]([ExtResource("4_cat"), ExtResource("5_bear")])
+roster = Array[Resource]([ExtResource("4_cat"), ExtResource("5_bear"), ExtResource("roster_fox"), ExtResource("roster_wolf"), ExtResource("roster_husky"), ExtResource("roster_shiba_inu"), ExtResource("roster_deer"), ExtResource("roster_stag"), ExtResource("roster_alpaca"), ExtResource("roster_donkey"), ExtResource("roster_horse"), ExtResource("roster_white_horse"), ExtResource("roster_cow"), ExtResource("roster_bull")])
 
 [node name="Fighters" type="Node3D" parent="."]
 unique_name_in_owner = true

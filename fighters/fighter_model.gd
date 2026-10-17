@@ -3,11 +3,12 @@ extends Node3D
 ## A fighter's visuals, kept separate from gameplay. Root of each character's
 ## model scene (fighters/roster/<name>/<name>_model.tscn).
 ##
-## The placeholder models are primitive meshes under a [code]Pivot[/code] node
-## (origin at the feet, nose toward +X). [method sync] poses them each frame
-## from the fighter's state with squash, lean and spin, so states read clearly
-## without animations. A rigged model would keep this API and drive an
-## AnimationTree from [method sync] instead.
+## Everything sits under a [code]Pivot[/code] node (origin at the feet, nose
+## toward +X). [method sync] turns it toward the fighter's facing, poses it in
+## [method _pose] and applies the hit-flash / intangibility overlays. The base
+## [method _pose] squashes, leans and spins the primitive placeholder models so
+## states read clearly without animations; [AnimatedFighterModel] plays a rigged
+## model's animations instead.
 
 ## How quickly the model turns toward its facing direction (fraction per frame).
 const TURN_RATE := 0.45
@@ -40,13 +41,17 @@ func flash() -> void:
 
 ## Poses the model for the fighter's current frame. Called once per simulation frame.
 func sync(fighter: Fighter) -> void:
-	var state := fighter.state
 	var target_yaw := -CAMERA_TILT if fighter.facing > 0 else PI + CAMERA_TILT
 	_yaw = lerp_angle(_yaw, target_yaw, TURN_RATE)
+	_pose(fighter)
+	_apply_overlay(fighter)
 
+
+## Poses [code]Pivot[/code] for this frame. Placeholder models squash, lean and spin.
+func _pose(fighter: Fighter) -> void:
+	var state := fighter.state
 	var squash := 1.0
 	var tilt := 0.0
-	var offset := Vector3.ZERO
 	if state is JumpSquatState or state is LandingState:
 		squash = 0.8
 	elif state is CrouchState:
@@ -60,20 +65,30 @@ func sync(fighter: Fighter) -> void:
 	elif state is ShieldBreakState:
 		tilt = sin(fighter.frame_count * 0.2) * 0.3
 
-	if fighter.is_tumbling() and not fighter.grounded:
-		_spin += TUMBLE_SPIN_SPEED
-		tilt = _spin
-	else:
-		_spin = 0.0
-
-	if fighter.hitlag_frames > 0 and state is HitstunState:
-		offset = Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0), 0.0) * HITLAG_SHAKE
+	var spin := _tumble_spin(fighter)
+	if spin != 0.0:
+		tilt = spin
 
 	var widen := 1.0 + (1.0 - squash) * 0.5
 	_pivot.rotation = Vector3(0.0, _yaw, tilt)
 	_pivot.scale = Vector3(widen, squash, widen)
-	_pivot.position = offset
-	_apply_overlay(fighter)
+	_pivot.position = _hitlag_shake(fighter)
+
+
+## Tumble spin angle for this frame (0 when not tumbling in the air).
+func _tumble_spin(fighter: Fighter) -> float:
+	if fighter.is_tumbling() and not fighter.grounded:
+		_spin += TUMBLE_SPIN_SPEED
+	else:
+		_spin = 0.0
+	return _spin
+
+
+## Small random shake while [param fighter] is frozen in hitlag after being hit.
+func _hitlag_shake(fighter: Fighter) -> Vector3:
+	if fighter.hitlag_frames > 0 and fighter.state is HitstunState:
+		return Vector3(randf_range(-1.0, 1.0), randf_range(-1.0, 1.0), 0.0) * HITLAG_SHAKE
+	return Vector3.ZERO
 
 
 func _apply_overlay(fighter: Fighter) -> void:

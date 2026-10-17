@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/husky/husky_model.tscn" id="1_1h6gh"]
+[ext_resource type="Resource" path="res://fighters/roster/cat/cat_moveset.tres" id="2_0bigq"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_qxslq"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_f7fvt"]
+
+[sub_resource type="Resource" id="Resource_30g48"]
+script = ExtResource("4_f7fvt")
+weight = 94.0
+height = 11.0
+radius = 5.2
+walk_speed = 1.3
+initial_dash_speed = 2.0
+run_speed = 2.0
+traction = 0.11
+full_hop_height = 38.0
+short_hop_height = 18.0
+air_jump_height = 38.0
+air_speed = 1.15
+gravity = 0.11
+fall_speed = 1.65
+shield_radius = 9.5
+
+[resource]
+script = ExtResource("3_qxslq")
+display_name = "Husky"
+description = "Bouncy all-rounder (Greninja-like): quick, high jumps and good air speed for its weight."
+color = Color(0.35, 0.4, 0.5, 1)
+model_scene = ExtResource("1_1h6gh")
+stats = SubResource("Resource_30g48")
+moveset = ExtResource("2_0bigq")

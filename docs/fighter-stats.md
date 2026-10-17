@@ -44,7 +44,7 @@ Ranges are the extremes across Ultimate's cast (holder in brackets), from ultima
 
 Ultimate stats with no ultimateframedata figure (walk/run acceleration, jump momentum, run turnaround) are reasonable starting values. Tune them in playtests.
 
-## How the two characters differ
+## How Cat and Bear differ
 
 **Cat (all-rounder, Mario-like):** every stat is Mario's. Its moves start quickly (jab on frame 2, tilts on 5, nair on 3) and do modest damage, with tilts that combo into each other.
 It has a spiking forward air and a mostly vertical up special (*Skyward Pounce*).
@@ -52,6 +52,30 @@ It has a spiking forward air and a mostly vertical up special (*Skyward Pounce*)
 **Bear (heavyweight, DK/Bowser-like):** heavy (130), big (20 × 6.2 hurtbox), falls fast (1.75, gravity 0.11) and has low air acceleration and air friction, so it's slow to change direction in the air.
 Its moves come out later (jab frame 5, forward smash frame 19) but hit much harder (22% forward smash) with bigger hitboxes. Its down air is a meteor smash.
 Its recovery (*Spinning Heave*) goes far sideways but barely up. That's the classic heavyweight trade: lives long, hits hard, gets comboed and edge-guarded.
+
+## The animal roster
+
+The 12 animated animals (Quaternius *Ultimate Animated Animals*, CC0) each have their own `FighterStats`, modeled on an Ultimate archetype and kept within Ultimate's ranges.
+Their movesets aren't their own yet: light animals share Cat's (`cat/cat_moveset.tres`) and heavy ones share Bear's (`bear/bear_moveset.tres`), so move names like "Haymaker Paw" don't fit them.
+Heavy animals also use Bear's dodge, roll and jump-momentum values.
+
+| Animal | Archetype | Moveset | Weight | Height × radius | Run | Gravity / fall | Jumps (full hop) |
+|---|---|---|---|---|---|---|---|
+| Fox | Speedster (Fox) | Cat | 77 | 10.5 × 5 | 2.402 | 0.23 / 2.1 | 2 (36) |
+| Wolf | Aggressive midweight (Wolf) | Cat | 92 | 11 × 5.5 | 1.84 | 0.18 / 1.8 | 2 (33.5) |
+| Husky | Bouncy all-rounder (Greninja) | Cat | 94 | 11 × 5.2 | 2.0 | 0.11 / 1.65 | 2 (38) |
+| Shiba Inu | Small and slippery (Pikachu) | Cat | 79 | 10 × 5 | 2.039 | 0.095 / 1.55 | 2 (34) |
+| Deer | Floaty leaper (Peach) | Cat | 85 | 15 × 5.5 | 1.95 | 0.075 / 1.3 | 2 (46) |
+| Alpaca | Multi-jumper (Jigglypuff-lite) | Cat | 90 | 17 × 5.5 | 1.6 | 0.07 / 1.15 | 4 (30) |
+| Donkey | Bruiser (King K. Rool) | Bear | 108 | 15 × 6 | 1.65 | 0.1 / 1.6 | 2 (30) |
+| Stag | Slow powerhouse (Ganondorf) | Bear | 118 | 17 × 6 | 1.65 | 0.13 / 1.83 | 2 (33) |
+| Horse | Charging heavyweight, low traction | Bear | 112 | 19 × 6.5 | 2.3 | 0.12 / 1.75 | 2 (34) |
+| White Horse | Fast striker (Captain Falcon) | Bear | 104 | 19 × 6.5 | 2.53 | 0.13 / 1.86 | 2 (37) |
+| Cow | Floaty super-heavy (King Dedede) | Bear | 127 | 17 × 7.5 | 1.6 | 0.095 / 1.28 | 3 (37) |
+| Bull | Super-heavyweight (Bowser) | Bear | 135 | 18 × 8 | 1.87 | 0.11 / 1.53 | 2 (30) |
+
+Each model is scaled so its rest pose is as tall as `height`. The hurtbox is still the vertical capsule, so it covers the torso while heads and tails stick out past it.
+The long-bodied animals (fox and wolf tails, cow and bull) show this most.
 
 ## Moves
 
@@ -66,8 +90,10 @@ Each `MoveData` follows ultimateframedata conventions:
 
 ## Adding a character
 
-1. Duplicate a roster folder, e.g. `fighters/roster/bear/` → `fighters/roster/fox/`.
-2. Build the model scene. Its root needs the `FighterModel` script and a `%Pivot` node, with the origin at the feet and the nose toward +X. Match its size to `height` and `radius`.
-3. Edit the stats and moves in the inspector, using ultimateframedata for reference values.
+1. Duplicate a roster folder, e.g. `fighters/roster/wolf/` → `fighters/roster/lion/`, renaming the files to match the folder (`lion/lion.tres`).
+2. Build the model scene. Its root needs a `%Pivot` node, with the origin at the feet and the nose toward +X. Match its size to `height` and `radius`.
+   - Primitive meshes: use the `FighterModel` script.
+   - A rigged glTF: use `AnimatedFighterModel` and instance the glTF under `Pivot`, rotated and scaled to fit. Set the animation names in the inspector if they aren't the Quaternius ones.
+3. Edit the stats and moves in the inspector, using ultimateframedata for reference values. To share a moveset, point `moveset` at an existing `<name>_moveset.tres`; to give the character its own, make it unique.
 4. Add the `.tres` to `Match.roster` in `match/match.tscn`. It then shows up in the pause menu.
-5. Run the tests. They measure jump heights and speeds for the characters they load (add new ones in `tests/run_tests.gd`).
+5. Run the tests. They find every `<name>/<name>.tres` in the roster folder. For each one they check that it's listed in `match.tscn`, that its model has every animation it names, and that its jump heights, speeds and fall speeds match its stats.

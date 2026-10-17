@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="FighterData" format=3]
+
+[ext_resource type="PackedScene" path="res://fighters/roster/white_horse/white_horse_model.tscn" id="1_l3hdm"]
+[ext_resource type="Resource" path="res://fighters/roster/bear/bear_moveset.tres" id="2_572vl"]
+[ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_5ayxl"]
+[ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_30sbw"]
+
+[sub_resource type="Resource" id="Resource_6u0qp"]
+script = ExtResource("4_30sbw")
+weight = 104.0
+height = 19.0
+radius = 6.5
+walk_speed = 1.365
+initial_dash_speed = 2.3
+dash_frames = 12
+run_speed = 2.53
+run_acceleration = 0.12
+traction = 0.11
+full_hop_height = 37.0
+short_hop_height = 17.5
+air_jump_height = 37.0
+jump_initial_x = 0.3
+jump_max_x = 1.4
+air_speed = 1.12
+gravity = 0.13
+fall_speed = 1.86
+hard_landing_frames = 5
+shield_radius = 13.0
+spot_dodge_intangible = Vector2i(3, 18)
+spot_dodge_frames = 28
+forward_roll_intangible = Vector2i(4, 16)
+forward_roll_frames = 32
+back_roll_intangible = Vector2i(5, 17)
+back_roll_frames = 37
+roll_distance = 32.0
+air_dodge_intangible = Vector2i(4, 32)
+air_dodge_frames = 46
+air_dodge_speed = 2.3
+ledge_roll_intangible = 24
+
+[resource]
+script = ExtResource("3_5ayxl")
+display_name = "White Horse"
+description = "Fast striker (Captain Falcon-like): the quickest runner of the heavy hitters, lighter than Horse."
+color = Color(0.95, 0.95, 0.92, 1)
+model_scene = ExtResource("1_l3hdm")
+stats = SubResource("Resource_6u0qp")
+moveset = ExtResource("2_572vl")
