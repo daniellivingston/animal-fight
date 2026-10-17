@@ -1,0 +1,9 @@
+# Netlify hosting for the Web export. GitHub Actions (or you, locally) exports the
+# build and deploys it with the Netlify CLI (see README "Web export"); Netlify
+# doesn't run Godot. The single-threaded Web build needs no COOP/COEP headers.
+
+[build]
+publish = "build/web"
+# Skip Netlify's own Git-triggered builds if the site is linked to the repo;
+# CLI deploys from GitHub Actions aren't affected.
+ignore = "exit 0"

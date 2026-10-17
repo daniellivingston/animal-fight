@@ -107,10 +107,20 @@ Fighters never run their own `_physics_process`. The order is fixed and determin
 
 ## Web export
 
+The Web build is hosted on Netlify. Every push to `master` deploys it: `.github/workflows/deploy-web.yml` pulls the Git LFS assets, runs the tests, exports the build with headless Godot on a GitHub runner and uploads it with the Netlify CLI. Netlify itself does not run Godot.
+
+**CI setup (once):** create the site (`npx netlify-cli login`, then `npx netlify-cli sites:create`). Don't connect the site to the Git repo in Netlify; GitHub Actions does the building. Add two GitHub repository secrets: `NETLIFY_AUTH_TOKEN`, a personal access token from *User settings → Applications*, and `NETLIFY_SITE_ID`, the site's *Project ID*. The workflow pins the Godot version (`GODOT_VERSION`). Bump it there whenever the project's Godot version changes. It caches Godot and the Web export templates between runs. You can also start it by hand from the Actions tab (*Run workflow*).
+
+To export and deploy by hand instead:
+
 ```sh
 mkdir -p build/web
 /Applications/Godot.app/Contents/MacOS/Godot --headless --path . --export-release "Web" build/web/index.html
+npx netlify-cli deploy           # draft URL, to check first
+npx netlify-cli deploy --prod    # publish
 ```
+
+The first time, run `npx netlify-cli login`, then `npx netlify-cli link` (or let `deploy` create a site). The site link is stored in `.netlify/`, which is git-ignored.
 
 The Web preset uses the **single-threaded** build (`variant/thread_support=false`), so it needs no cross-origin isolation headers and runs on any static host (itch.io, GitHub Pages, Netlify), including iOS Safari.
 The preset also adds CSS that stops the browser from scrolling, zooming or selecting text on touch, and enables a fullscreen, landscape PWA for "Add to Home Screen".

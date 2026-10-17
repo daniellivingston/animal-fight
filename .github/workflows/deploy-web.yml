@@ -1,0 +1,76 @@
+# Exports the Web build with headless Godot and deploys it to Netlify.
+# Needs repository secrets NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID (see README "Web export").
+name: Deploy web build
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# A newer push supersedes a deploy still in progress.
+concurrency:
+  group: deploy-web
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSION: 4.7.2
+  NETLIFY_CLI_VERSION: 27.12.0
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull Git LFS assets
+        run: git lfs pull
+
+      - name: Cache Godot and Web export templates
+        id: godot-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/godot
+            ~/.local/share/godot/export_templates
+          key: godot-${{ env.GODOT_VERSION }}-web-nothreads-templates
+
+      # The full templates archive is ~1.3 GB; keep only the single-threaded Web templates.
+      - name: Install Godot and Web export templates
+        if: steps.godot-cache.outputs.cache-hit != 'true'
+        run: |
+          base="https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable"
+          templates="$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          mkdir -p ~/godot "$templates"
+          curl -fsSL -o /tmp/godot.zip "$base/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q /tmp/godot.zip -d ~/godot
+          mv ~/godot/Godot_v${GODOT_VERSION}-stable_linux.x86_64 ~/godot/godot
+          curl -fsSL -o /tmp/templates.tpz "$base/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          unzip -q -j /tmp/templates.tpz \
+            templates/version.txt templates/web_nothreads_release.zip templates/web_nothreads_debug.zip \
+            -d "$templates"
+
+      - name: Import project
+        run: ~/godot/godot --headless --path . --import
+
+      - name: Run tests
+        run: ~/godot/godot --headless --path . --fixed-fps 60 --script res://tests/run_tests.gd
+
+      - name: Export Web build
+        run: |
+          mkdir -p build/web
+          ~/godot/godot --headless --path . --export-release "Web" build/web/index.html
+          test -s build/web/index.pck && test -s build/web/index.wasm
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # netlify.toml supplies the publish directory.
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: >
+          npx --yes netlify-cli@${NETLIFY_CLI_VERSION} deploy --prod --no-build
+          --message "${{ github.sha }}"
