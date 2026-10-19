@@ -619,11 +619,16 @@ func _launch() -> void:
 
 
 ## Direction of the launch waiting for hitlag to end, or zero. Lets a
-## [DummyController] choose its DI.
+## [CpuController] choose its DI.
 func get_pending_launch_direction() -> Vector2:
 	if not _has_pending_launch:
 		return Vector2.ZERO
 	return Vector2.from_angle(deg_to_rad(_pending_angle))
+
+
+## Knockback of the launch waiting for hitlag to end, or 0.
+func get_pending_knockback() -> float:
+	return _pending_knockback if _has_pending_launch else 0.0
 
 
 func current_attack() -> AttackState:
@@ -735,6 +740,11 @@ func release_ledge() -> void:
 		ledge.occupant = null
 	ledge = null
 	_ledge_cooldown = LEDGE_REGRAB_COOLDOWN
+
+
+## Frames before ledges can be grabbed again after letting go.
+func get_ledge_cooldown() -> int:
+	return _ledge_cooldown
 
 
 ## Another fighter took the ledge (ledge trump): pop off it.

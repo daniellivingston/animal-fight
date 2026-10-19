@@ -45,3 +45,11 @@ func is_intangible() -> bool:
 
 func stops_at_edges() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	return maxi(_duration - frame, 0)
+
+
+func intangible_frames_left() -> int:
+	return maxi(_intangible.y - frame, 0)

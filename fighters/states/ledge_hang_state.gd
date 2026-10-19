@@ -39,3 +39,7 @@ func update() -> void:
 
 func controls_position() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	return maxi(GRAB_LAG - frame, 0)

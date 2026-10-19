@@ -1,6 +1,6 @@
 # CPU Players (AI) — Plan
 
-Status: **proposed** · Written: 2026-10-16 at commit `51642fd` · Scope: new `ai/` folder, `match/`, `input/`, `fighters/states/`, `ui/pause/`, `tests/`
+Status: **implemented** (Phases 0-6; Phase 7 partly), see [docs/ai.md](../docs/ai.md) for what was built and the tuned values · Written: 2026-10-16 at commit `51642fd` · Scope: new `ai/` folder, `match/`, `input/`, `fighters/states/`, `ui/pause/`, `tests/`
 
 This plan adds a second kind of player, the **CPU**, next to the existing human player. CPUs have difficulty levels 1–9, as in Smash.
 Part 1 summarizes how the Smash games build their CPUs and which of their flaws to avoid. Part 2 is the design. Part 3 is a phased implementation order with a "Done when" check for each phase.
@@ -463,14 +463,14 @@ This answers Smash's most common criticism, that you can't train against CPUs be
 
 | # | Phase | Effort | Playable result | Status |
 |---|-------|--------|-----------------|--------|
-| 0 | Plumbing: `PlayerSlot`, `CpuController` skeleton, `AiWorld` capture, menu, seeded RNG | S | CPU walks toward you | todo |
-| 1 | Execution layer: `InputPlan` macros and tests | M | Debug CPU can be told "short-hop fair" and does it | todo |
-| 2 | Knowledge: `MoveProfile`/`MoveBook`, `StageModel`, `Predict`, `frames_until_actionable` | M | Training overlay shows "in range: f-tilt (3f)" | todo |
-| 3 | Neutral, defend, punish + `CpuDifficulty` curves | L | A real level 1–9 opponent on stage | todo |
-| 4 | Recover, ledge, edgeguard (R3 planner) | L | CPU survives offstage and edgeguards | todo |
-| 5 | Hit reaction: DI/SDI/tech/getup; fold `DummyController` into CPU modes | M | Hard to combo at high level, easy at low | todo |
-| 6 | Tuning: ladder harness, personalities, per-character profiles, AI debug draw | M | Levels feel distinct; win rate rises with level | todo |
-| 7 | Optional: habit model (adaptation), advantage/combo depth, multi-fighter targeting | M | Level 9 adjusts to your ledge habits | todo |
+| 0 | Plumbing: `PlayerSlot`, `CpuController` skeleton, `AiWorld` capture, menu, seeded RNG | S | CPU walks toward you | done |
+| 1 | Execution layer: `InputPlan` macros and tests | M | Debug CPU can be told "short-hop fair" and does it | done |
+| 2 | Knowledge: `MoveProfile`/`MoveBook`, `StageModel`, `Predict`, `frames_until_actionable` | M | Training overlay shows "in range: f-tilt (3f)" | done (overlay shows frame advantage; "in range" is in the F3 view's hitbox drawing) |
+| 3 | Neutral, defend, punish + `CpuDifficulty` curves | L | A real level 1–9 opponent on stage | done; human playtest of levels 1, 5, 9 still to do |
+| 4 | Recover, ledge, edgeguard (R3 planner) | L | CPU survives offstage and edgeguards | done |
+| 5 | Hit reaction: DI/SDI/tech/getup; fold `DummyController` into CPU modes | M | Hard to combo at high level, easy at low | done (`DummyController` removed) |
+| 6 | Tuning: ladder harness, personalities, per-character profiles, AI debug draw | M | Levels feel distinct; win rate rises with level | done, except: 6>5 is at 58% (96 matches); Web benchmark not run |
+| 7 | Optional: habit model (adaptation), advantage/combo depth, multi-fighter targeting | M | Level 9 adjusts to your ledge habits | partly: habit model (used for ledge traps), true-combo depth, R6 target scoring and dive claims; teams and new move types wait for those features |
 
 ### Phase 0 — Plumbing
 
@@ -552,6 +552,8 @@ This answers Smash's most common criticism, that you can't train against CPUs be
 ---
 
 ## Open questions
+
+Decisions taken when implementing (2026-10-18), all as this plan proposed: (1) level 9 is human-plausible, with the frame-perfect level 10 hidden in debug builds; (2) P2 starts as a level 3 CPU on touch devices and as the stand dummy otherwise; (3) the habit model is in, from level 6; (4) built on the physics as it is (P1, P2, P5 of the physics review haven't landed; `Predict` and the recovery fidelity test will need re-checking when they do); (5) the AI shipped before grabs and specials.
 
 1. **Level 9 feel:** human-plausible (10-frame reactions, as proposed), or Smash-faithful near-frame-perfect defence? This plan proposes the former, with the frame-perfect mode as a hidden debug level 10.
 2. **Default P2:** CPU level 3 on launch (proposed for mobile, where there's one human), or keep the stand dummy everywhere until there's a mode select?

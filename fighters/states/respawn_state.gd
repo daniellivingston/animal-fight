@@ -30,3 +30,11 @@ func controls_position() -> bool:
 
 func is_intangible() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	return maxi(MIN_FRAMES - frame, 0)
+
+
+func intangible_frames_left() -> int:
+	return maxi(MAX_FRAMES - frame, 0) + Fighter.RESPAWN_INVINCIBILITY

@@ -43,3 +43,9 @@ func on_left_ground() -> void:
 
 func stops_at_edges() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	if _dizzy_start == 0:
+		return _dizzy_frames
+	return maxi(_dizzy_frames - (frame - _dizzy_start), 0)

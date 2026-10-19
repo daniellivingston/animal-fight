@@ -4,6 +4,7 @@
 [ext_resource type="Resource" path="res://fighters/roster/bear/bear_moveset.tres" id="2_572vl"]
 [ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_5ayxl"]
 [ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_30sbw"]
+[ext_resource type="Resource" path="res://ai/profiles/rushdown.tres" id="cpu_profile"]
 
 [sub_resource type="Resource" id="Resource_6u0qp"]
 script = ExtResource("4_30sbw")
@@ -46,3 +47,4 @@ color = Color(0.95, 0.95, 0.92, 1)
 model_scene = ExtResource("1_l3hdm")
 stats = SubResource("Resource_6u0qp")
 moveset = ExtResource("2_572vl")
+cpu_profile = ExtResource("cpu_profile")

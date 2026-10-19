@@ -49,3 +49,7 @@ func on_landed() -> void:
 
 func on_left_ground() -> void:
 	pass
+
+
+func frames_until_actionable() -> int:
+	return maxi(duration - frame, 0) + fighter.hitlag_frames

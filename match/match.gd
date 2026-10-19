@@ -4,23 +4,28 @@ extends Node
 ##
 ## The match owns the simulation loop. Each physics tick (one Smash frame) it
 ## advances every fighter, resolves hits between them, separates overlapping
-## fighters, checks blast zones and then updates visuals. Fighters never run
-## their own physics callbacks, so the order is fixed and frame-exact.
+## fighters, checks blast zones, records what CPUs will see ([AiWorld]) and
+## then updates visuals. Fighters never run their own physics callbacks, so
+## the order is fixed and frame-exact.
 
 ## Push between overlapping grounded fighters, units/frame.
 const _SEPARATION_SPEED := 0.4
+## Where the slot settings (human or CPU, level, mode) are kept between runs.
+const SETTINGS_PATH := "user://settings.cfg"
 
 @export var stage_scene: PackedScene
 @export var fighter_scene: PackedScene
 @export var roster: Array[FighterData] = []
 
-## Roster index for each player slot.
-var selections: Array[int] = [0, 1]
-## Whether player 2 is a local player (keyboard arrows / gamepad 2) or the dummy.
-var player_two_human := false
-var dummy := DummyController.new()
+## Who plays each fighter, in player order.
+var slots: Array[PlayerSlot] = []
+## Seeds every CPU's random choices (with its slot), so a match can be
+## reproduced. New at each start and reset; shown in the training overlay.
+var match_seed := 0
 var stage: Stage
 var fighters: Array[Fighter] = []
+## What CPUs see: snapshots of every fighter, captured at the end of each frame.
+var ai_world: AiWorld
 
 @onready var _fighters_root: Node3D = %Fighters
 @onready var _camera: FightCamera = %FightCamera
@@ -33,31 +38,45 @@ func _ready() -> void:
 	stage = stage_scene.instantiate() as Stage
 	add_child(stage)
 	move_child(stage, 0)
+	ai_world = AiWorld.new(stage, fighters)
+	var ai_debug := AiDebugDraw.new()
+	add_child(ai_debug)
+	ai_debug.setup(self)
+	_default_slots()
+	load_settings()
 	_pause_menu.setup(self)
 	start()
 
 
-## (Re)creates both fighters from [member selections] at their spawn points.
+## P1 is a human. P2 is the stand dummy, or a level 3 CPU on touch devices,
+## where there is only one human.
+func _default_slots() -> void:
+	slots = [PlayerSlot.new(PlayerSlot.Kind.HUMAN, 0), PlayerSlot.new(PlayerSlot.Kind.CPU, 1)]
+	if GameInput.device != GameInput.Device.TOUCH:
+		slots[1].cpu_mode = CpuController.Mode.STAND
+
+
+## (Re)creates every fighter from [member slots] at their spawn points.
 func start() -> void:
 	for fighter in fighters:
 		fighter.queue_free()
 	fighters.clear()
-	for i in selections.size():
+	for i in slots.size():
 		var fighter := fighter_scene.instantiate() as Fighter
-		fighter.data = roster[selections[i]]
+		fighter.data = roster[slots[i].character]
 		fighter.player_slot = i + 1
 		fighter.stage = stage
 		fighter.name = "P%d" % (i + 1)
 		_fighters_root.add_child(fighter)
 		fighters.append(fighter)
-	apply_controllers()
+	_hud.setup(fighters, slots)
+	_training_info.setup(self)
 	reset()
 	_camera.setup(stage, fighters)
-	_hud.setup(fighters)
-	_training_info.setup(fighters)
 
 
-## Puts both fighters back at their spawn points with 0% and no KOs.
+## Puts every fighter back at its spawn point with 0% and no KOs, and starts
+## the CPUs over with a new seed.
 func reset() -> void:
 	for i in fighters.size():
 		var fighter := fighters[i]
@@ -66,14 +85,44 @@ func reset() -> void:
 		fighter.kos = 0
 		fighter.falls = 0
 		fighter.sync_visuals()
+	match_seed = randi()
+	apply_controllers()
 
 
+## Gives each fighter the controller its slot asks for. Humans take the Input
+## Map slots in player order; CPUs get fresh controllers seeded from
+## [member match_seed] and their slot.
 func apply_controllers() -> void:
-	if fighters.is_empty():
+	ai_world.clear()
+	var next_input := 1
+	for i in mini(slots.size(), fighters.size()):
+		var slot := slots[i]
+		if slot.kind == PlayerSlot.Kind.HUMAN and next_input <= InputActions.MAX_LOCAL_PLAYERS:
+			slot.input_slot = next_input
+			next_input += 1
+			fighters[i].controller = PlayerController.new(slot.input_slot)
+		else:
+			var cpu := CpuController.new(slot.cpu_level, slot.cpu_mode)
+			cpu.dummy_di = slot.dummy_di
+			cpu.setup(ai_world, CpuController.seed_for(match_seed, i), fighters[i].data.cpu_profile)
+			fighters[i].controller = cpu
+	_hud.refresh_labels()
+
+
+func save_settings() -> void:
+	var config := ConfigFile.new()
+	config.load(SETTINGS_PATH)
+	for i in slots.size():
+		slots[i].save(config, "p%d" % (i + 1))
+	config.save(SETTINGS_PATH)
+
+
+func load_settings() -> void:
+	var config := ConfigFile.new()
+	if config.load(SETTINGS_PATH) != OK:
 		return
-	fighters[0].controller = PlayerController.new(1)
-	if fighters.size() > 1:
-		fighters[1].controller = PlayerController.new(2) if player_two_human else dummy
+	for i in slots.size():
+		slots[i].load_from(config, "p%d" % (i + 1))
 
 
 func _physics_process(_delta: float) -> void:
@@ -87,6 +136,7 @@ func _physics_process(_delta: float) -> void:
 			_burst(fighter)
 			fighter.knock_out()
 		fighter.sync_visuals()
+	ai_world.capture()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -96,6 +146,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		DebugSettings.show_hitboxes = not DebugSettings.show_hitboxes
 	elif event.is_action_pressed(InputActions.TOGGLE_TRAINING_INFO):
 		DebugSettings.show_training_info = not DebugSettings.show_training_info
+	elif event.is_action_pressed(InputActions.TOGGLE_AI_DEBUG):
+		DebugSettings.show_ai_debug = not DebugSettings.show_ai_debug
+		if DebugSettings.show_ai_debug:
+			DebugSettings.show_training_info = true
 	elif event.is_action_pressed(InputActions.RESET_MATCH):
 		reset()
 	else:

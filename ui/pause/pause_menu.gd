@@ -1,25 +1,38 @@
 class_name PauseMenu
 extends CanvasLayer
-## Pause and training settings: pick characters, make player 2 a human or a
-## dummy (and how it behaves), toggle the debug views, and compare the two
-## fighters' stats side by side. Built in code because its options come from the
-## roster.
+## Pause and training settings: pick characters, make each player a human or a
+## CPU (level 1-9) and player 2 a training dummy (and how it behaves), toggle
+## the debug views, and compare the two fighters' stats side by side. Built in
+## code because its options come from the roster. Slot settings are saved.
 
 signal opened
 signal closed
 
-const _CONTROL_OPTIONS: Array[String] = ["Dummy: stand", "Dummy: shield", "Dummy: jump", "Human (P2 controls)"]
+## Control options: label, slot kind, CPU mode. P1 offers the first two.
+const _CONTROL_OPTIONS: Array[Array] = [
+	["Human", PlayerSlot.Kind.HUMAN, CpuController.Mode.FIGHT],
+	["CPU", PlayerSlot.Kind.CPU, CpuController.Mode.FIGHT],
+	["Dummy: stand", PlayerSlot.Kind.CPU, CpuController.Mode.STAND],
+	["Dummy: shield", PlayerSlot.Kind.CPU, CpuController.Mode.SHIELD],
+	["Dummy: jump", PlayerSlot.Kind.CPU, CpuController.Mode.JUMP],
+	["CPU: walk", PlayerSlot.Kind.CPU, CpuController.Mode.WALK],
+	["CPU: run away", PlayerSlot.Kind.CPU, CpuController.Mode.EVADE],
+]
 const _DI_OPTIONS: Array[String] = ["None", "Survival DI", "Combo DI"]
 const _TAP_JUMP_OPTIONS: Array[String] = ["Auto (off on keyboard)", "On", "Off"]
 
 var _match: Match
-var _p1_select := OptionButton.new()
-var _p2_select := OptionButton.new()
-var _control_select := OptionButton.new()
+var _character_selects: Array[OptionButton] = [OptionButton.new(), OptionButton.new()]
+var _control_selects: Array[OptionButton] = [OptionButton.new(), OptionButton.new()]
+var _level_rows: Array[HBoxContainer] = []
+var _level_labels: Array[Label] = []
+var _level_row_labels: Array[Label] = []
 var _di_select := OptionButton.new()
+var _di_label: Label
 var _tap_jump_select := OptionButton.new()
 var _hitboxes_toggle := CheckButton.new()
 var _info_toggle := CheckButton.new()
+var _ai_debug_toggle := CheckButton.new()
 var _stats_grid := GridContainer.new()
 var _resume_button := Button.new()
 
@@ -33,7 +46,7 @@ func _ready() -> void:
 
 func setup(match_node: Match) -> void:
 	_match = match_node
-	for select: OptionButton in [_p1_select, _p2_select]:
+	for select in _character_selects:
 		select.clear()
 		for data in _match.roster:
 			select.add_item(data.display_name)
@@ -42,13 +55,11 @@ func setup(match_node: Match) -> void:
 func open() -> void:
 	if visible:
 		return
-	_p1_select.select(_match.selections[0])
-	_p2_select.select(_match.selections[1])
-	_control_select.select(3 if _match.player_two_human else int(_match.dummy.behavior))
-	_di_select.select(int(_match.dummy.di))
+	_refresh_slots()
 	_tap_jump_select.select(int(GameInput.tap_jump))
 	_hitboxes_toggle.button_pressed = DebugSettings.show_hitboxes
 	_info_toggle.button_pressed = DebugSettings.show_training_info
+	_ai_debug_toggle.button_pressed = DebugSettings.show_ai_debug
 	_refresh_stats()
 	visible = true
 	get_tree().paused = true
@@ -108,21 +119,32 @@ func _build() -> void:
 	grid.add_theme_constant_override(&"h_separation", 16)
 	grid.add_theme_constant_override(&"v_separation", 8)
 	settings.add_child(grid)
-	_add_row(grid, "Player 1", _p1_select)
-	_add_row(grid, "Player 2", _p2_select)
-	_add_row(grid, "Player 2 control", _control_select, _CONTROL_OPTIONS)
-	_add_row(grid, "Dummy DI", _di_select, _DI_OPTIONS)
+	for i in 2:
+		var options: Array[String] = []
+		for j in (2 if i == 0 else _CONTROL_OPTIONS.size()):
+			options.append(_CONTROL_OPTIONS[j][0])
+		_add_row(grid, "Player %d" % (i + 1), _character_selects[i])
+		_add_row(grid, "Player %d control" % (i + 1), _control_selects[i], options)
+		_level_row_labels.append(_add_row(grid, "Player %d CPU level" % (i + 1), _build_level_row(i)))
+		_character_selects[i].item_selected.connect(_on_fighter_selected.bind(i))
+		_control_selects[i].item_selected.connect(_on_control_selected.bind(i))
+	_di_label = _add_row(grid, "Dummy DI", _di_select, _DI_OPTIONS)
 	_add_row(grid, "Tap jump", _tap_jump_select, _TAP_JUMP_OPTIONS)
 	_add_row(grid, "Hitboxes (F1)", _hitboxes_toggle)
 	_add_row(grid, "Training info (F2)", _info_toggle)
+	_add_row(grid, "AI debug (F3)", _ai_debug_toggle)
 
-	_p1_select.item_selected.connect(_on_fighter_selected.bind(0))
-	_p2_select.item_selected.connect(_on_fighter_selected.bind(1))
-	_control_select.item_selected.connect(_on_control_selected)
-	_di_select.item_selected.connect(func(index: int) -> void: _match.dummy.di = index as DummyController.DI)
+	_di_select.item_selected.connect(func(index: int) -> void:
+		_match.slots[1].dummy_di = index as AiDi.Mode
+		_apply_slots())
 	_tap_jump_select.item_selected.connect(func(index: int) -> void: GameInput.tap_jump = index as GameInput.TapJump)
 	_hitboxes_toggle.toggled.connect(func(on: bool) -> void: DebugSettings.show_hitboxes = on)
 	_info_toggle.toggled.connect(func(on: bool) -> void: DebugSettings.show_training_info = on)
+	_ai_debug_toggle.toggled.connect(func(on: bool) -> void:
+		DebugSettings.show_ai_debug = on
+		if on:
+			DebugSettings.show_training_info = true
+			_info_toggle.button_pressed = true)
 
 	var buttons := HBoxContainer.new()
 	buttons.add_theme_constant_override(&"separation", 12)
@@ -147,7 +169,7 @@ func _build() -> void:
 	stats_column.add_child(_stats_grid)
 
 
-func _add_row(grid: GridContainer, text: String, control: Control, options: Array[String] = []) -> void:
+func _add_row(grid: GridContainer, text: String, control: Control, options: Array[String] = []) -> Label:
 	var label := Label.new()
 	label.text = text
 	grid.add_child(label)
@@ -157,6 +179,33 @@ func _add_row(grid: GridContainer, text: String, control: Control, options: Arra
 			select.add_item(option)
 	control.custom_minimum_size = Vector2(240.0, 48.0)
 	grid.add_child(control)
+	return label
+
+
+## "−  Lv 3  +" with big touch targets; the number takes the level's colour.
+func _build_level_row(slot: int) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override(&"separation", 8)
+	var minus := Button.new()
+	minus.text = "−"
+	var plus := Button.new()
+	plus.text = "+"
+	var label := Label.new()
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_font_size_override(&"font_size", 26)
+	label.add_theme_color_override(&"font_outline_color", Color.BLACK)
+	label.add_theme_constant_override(&"outline_size", 6)
+	for button: Button in [minus, plus]:
+		button.custom_minimum_size = Vector2(56.0, 48.0)
+	minus.pressed.connect(_on_level_step.bind(slot, -1))
+	plus.pressed.connect(_on_level_step.bind(slot, 1))
+	row.add_child(minus)
+	row.add_child(label)
+	row.add_child(plus)
+	_level_rows.append(row)
+	_level_labels.append(label)
+	return row
 
 
 func _add_button(parent: Control, text: String, action: Callable) -> void:
@@ -168,16 +217,54 @@ func _add_button(parent: Control, text: String, action: Callable) -> void:
 
 
 func _on_fighter_selected(index: int, slot: int) -> void:
-	_match.selections[slot] = index
+	_match.slots[slot].character = index
 	_match.start()
 	_refresh_stats()
 
 
-func _on_control_selected(index: int) -> void:
-	_match.player_two_human = index == 3
-	if not _match.player_two_human:
-		_match.dummy.behavior = index as DummyController.Behavior
+func _on_control_selected(index: int, slot: int) -> void:
+	var option: Array = _CONTROL_OPTIONS[index]
+	_match.slots[slot].kind = option[1]
+	_match.slots[slot].cpu_mode = option[2]
+	_apply_slots()
+
+
+func _on_level_step(slot: int, step: int) -> void:
+	# The frame-perfect debug level is only offered in debug builds.
+	var top := CpuController.DEBUG_LEVEL if OS.is_debug_build() else CpuController.MAX_LEVEL
+	var data := _match.slots[slot]
+	data.cpu_level = clampi(data.cpu_level + step, 1, top)
+	_apply_slots()
+
+
+func _apply_slots() -> void:
 	_match.apply_controllers()
+	_match.save_settings()
+	_refresh_slots()
+
+
+func _refresh_slots() -> void:
+	for i in 2:
+		var data := _match.slots[i]
+		_character_selects[i].select(data.character)
+		var control := 0
+		for j in _CONTROL_OPTIONS.size():
+			if _CONTROL_OPTIONS[j][1] == data.kind and (data.kind == PlayerSlot.Kind.HUMAN or _CONTROL_OPTIONS[j][2] == data.cpu_mode):
+				control = j
+		_control_selects[i].select(mini(control, _control_selects[i].item_count - 1))
+		var shows_level := data.kind == PlayerSlot.Kind.CPU
+		_level_rows[i].visible = shows_level
+		_level_row_labels[i].visible = shows_level
+		var level := data.cpu_level
+		_level_labels[i].text = "Lv %d%s" % [level, " (frame-perfect)" if level == CpuController.DEBUG_LEVEL else ""]
+		_level_labels[i].add_theme_color_override(&"font_color", PlayerSlot.level_color(level).lightened(0.25))
+	_di_select.select(int(_match.slots[1].dummy_di))
+	# DI is a setting of the training dummy modes only.
+	var p2 := _match.slots[1]
+	var dummy := p2.kind == PlayerSlot.Kind.CPU and p2.cpu_mode in [CpuController.Mode.STAND,
+			CpuController.Mode.SHIELD, CpuController.Mode.JUMP]
+	_di_select.visible = dummy
+	_di_label.visible = dummy
 
 
 func _toggle_fullscreen() -> void:
@@ -188,8 +275,8 @@ func _toggle_fullscreen() -> void:
 func _refresh_stats() -> void:
 	for child in _stats_grid.get_children():
 		child.queue_free()
-	var a := _match.roster[_match.selections[0]]
-	var b := _match.roster[_match.selections[1]]
+	var a := _match.roster[_match.slots[0].character]
+	var b := _match.roster[_match.slots[1].character]
 	_add_stat_row("", a.display_name, b.display_name, true)
 	for row in _stat_rows():
 		var getter: Callable = row[1]

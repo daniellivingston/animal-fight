@@ -9,6 +9,7 @@ const PAUSE := &"pause"
 const TOGGLE_HITBOXES := &"toggle_hitboxes"
 const TOGGLE_TRAINING_INFO := &"toggle_training_info"
 const RESET_MATCH := &"reset_match"
+const TOGGLE_AI_DEBUG := &"toggle_ai_debug"
 
 ## Number of local player slots that have actions in the Input Map.
 const MAX_LOCAL_PLAYERS := 2

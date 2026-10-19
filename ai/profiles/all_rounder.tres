@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="CpuProfile" format=3]
+
+[ext_resource type="Script" path="res://ai/cpu_personality.gd" id="1_lt8se"]
+[ext_resource type="Script" path="res://ai/cpu_profile.gd" id="2_ig4d2"]
+
+[sub_resource type="Resource" id="Resource_8qfu7"]
+script = ExtResource("1_lt8se")
+aggression = 0.2
+air_preference = 0.5
+defense_style = 0.2
+edgeguard_appetite = 0.2
+
+[resource]
+script = ExtResource("2_ig4d2")
+personality = SubResource("Resource_8qfu7")
+move_weights = Dictionary[StringName, float]({
+&"forward_air": 0.3,
+&"up_tilt": 0.2
+})

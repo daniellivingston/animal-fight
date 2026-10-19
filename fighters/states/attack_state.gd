@@ -134,3 +134,10 @@ func can_grab_ledge() -> bool:
 
 func grabs_ledge_while_rising() -> bool:
 	return can_grab_ledge()
+
+
+func frames_until_actionable() -> int:
+	var left := maxi(move.total_frames - frame, 0) + fighter.hitlag_frames
+	if move.ends_in_helpless and not fighter.grounded:
+		left += move.landing_lag + 1
+	return left

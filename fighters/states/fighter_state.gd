@@ -67,3 +67,17 @@ func controls_position() -> bool:
 
 func is_intangible() -> bool:
 	return false
+
+
+## Frames left before the fighter can act on its own: 0 means it acts on its
+## next frame. Hitlag counts. Airborne states that end on landing only count
+## what's known so far (the landing lag, not the fall). Shown in the training
+## overlay as frame advantage, and read by CPUs for punish windows.
+func frames_until_actionable() -> int:
+	return 0
+
+
+## Frames of intangibility left from this state (not counting ledge or respawn
+## intangibility, see [member Fighter.intangible_frames]).
+func intangible_frames_left() -> int:
+	return 0

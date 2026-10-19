@@ -63,3 +63,11 @@ func is_raised() -> bool:
 
 func stops_at_edges() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	if _stun > 0:
+		return _stun + fighter.hitlag_frames
+	if _drop_frame > 0:
+		return maxi(SmashFormulas.SHIELD_DROP_FRAMES - _drop_frame, 0)
+	return fighter.hitlag_frames

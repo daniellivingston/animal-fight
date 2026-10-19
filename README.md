@@ -2,7 +2,7 @@
 
 A Smash Bros-style platform fighter with animals, built with **Godot 4.7** (GDScript). It targets desktop, mobile and the web, and touch controls are first-class.
 
-> Current state: the foundation. One stage (Meadow: a main platform with two soft platforms above it), 14 selectable characters, Smash Ultimate physics and combat, training tools, and desktop, gamepad and touch controls.
+> Current state: the foundation. One stage (Meadow: a main platform with two soft platforms above it), 14 selectable characters, Smash Ultimate physics and combat, CPU opponents at levels 1-9, training tools, and desktop, gamepad and touch controls.
 > Cat and Bear are primitive placeholders with their own movesets. The other 12 (Fox, Wolf, Husky, Shiba Inu, Deer, Stag, Alpaca, Donkey, Horse, White Horse, Cow, Bull) are rigged, animated low-poly models with their own stats; for now they share Cat's or Bear's moveset (see [docs/fighter-stats.md](docs/fighter-stats.md#the-animal-roster)).
 
 ## Running
@@ -10,7 +10,8 @@ A Smash Bros-style platform fighter with animals, built with **Godot 4.7** (GDSc
 - **Editor:** open the folder in Godot 4.7 and press <kbd>F5</kbd>.
 - **CLI:** `/Applications/Godot.app/Contents/MacOS/Godot --path .`
 - **Touch controls on desktop:** `Godot --path . -- --touch` (the mouse acts as one finger).
-- **Tests:** `Godot --headless --path . --fixed-fps 60 --script res://tests/run_tests.gd` (about 2 s; exits with 1 on failure).
+- **Tests:** `Godot --headless --path . --fixed-fps 60 --script res://tests/run_tests.gd` (about 20 s; exits with 1 on failure).
+- **CPU ladder and benchmark** (slow, by hand): `Godot --headless --path . --fixed-fps 60 --script res://tests/ai_ladder.gd -- --matches=20` plays CPU levels against each other; `-- --bench` times the CPUs (see [docs/ai.md](docs/ai.md)).
 - **Smoke check:** `Godot --headless --path . --quit-after 120` should print only the version banner.
 
 ## Controls
@@ -25,7 +26,7 @@ A Smash Bros-style platform fighter with animals, built with **Godot 4.7** (GDSc
 | Smash attack | I (+ direction) | ; | Right stick (C-stick)            | Flick + Attack |
 | Walk / tilt | Left Shift | Right Shift | (analog)                      | (analog) |
 
-Global keys: Esc / Start pauses, F1 toggles hitboxes, F2 toggles the training overlay, F5 / Back resets.
+Global keys: Esc / Start pauses, F1 toggles hitboxes, F2 toggles the training overlay, F3 toggles the AI debug view, F5 / Back resets.
 
 **Smash-style inputs.** Flick the stick to dash; flick and press attack together for a smash attack, or tilt gently for a tilt attack. Hold attack to charge a smash.
 Tap down in the air to fast fall. Flick down on a platform to drop through. Shield and flick sideways to roll, or flick down to spot dodge. Shield in the air to air dodge, toward a direction for a directional air dodge.
@@ -43,24 +44,29 @@ Phones in portrait get a "turn your device" hint.
 The pause menu (Esc, Start, or the touch pause button) has the playtest settings:
 
 - Pick each player's character.
-- Make player 2 a dummy (stand / shield / jump) or a second local player.
+- Make each player a human or a CPU, and set the CPU's level (1-9, as in Smash; the hidden level 10 is a frame-perfect debug CPU in debug builds). Player 2 can also be a training dummy (stand / shield / jump), or a CPU that walks back and forth or runs away. Touch devices start with a level 3 CPU as player 2; otherwise player 2 starts as the stand dummy. The choices are saved.
 - Set the dummy's DI (none / survival / combo) and the tap jump mode.
 - Toggle hitboxes and the training overlay.
 - A side-by-side **stats comparison** of the two fighters.
 
 With hitboxes on (default), active hitboxes show as red spheres and hurtboxes as faint capsules (blue while intangible).
-The training overlay (F2) shows each fighter's state, frame, velocities, jumps and shield, and the numbers behind the last hit: damage, staleness, knockback, angle before and after DI, launch speed, hitstun, hitlag, and tumble.
+The training overlay (F2) shows each fighter's state, frame, frames until it can act (and the frame advantage), velocities, jumps and shield, and the numbers behind the last hit: damage, staleness, knockback, angle before and after DI, launch speed, hitstun, hitlag, and tumble.
+The AI debug view (F3) adds each CPU's level, situation, tactic, plan, reaction delay and seed, and draws where it perceives its opponent (a ghost box), the opponent's predicted path, its planned recovery and the hitboxes of the attack it chose. The match seed at the top reproduces the CPUs' choices.
 
 ## Project layout
 
 Folders are grouped by feature. Each scene sits next to its script.
 
 ```
+ai/              CpuController (computer players), AiWorld (what CPUs see), MoveBook/MoveProfile,
+                 StageModel, Predict, RecoveryPlanner, InputPlan, difficulty curves, profiles
+  situations/    The CPU's routines: recover, ledge, defend, punish, edgeguard, neutral, ...
 camera/          FightCamera: frames every fighter, clamped to the stage's camera bounds
 combat/          SmashFormulas (all ported constants and formulas), HitboxData, MoveData,
                  HitResolver (hit detection), StaleMoveQueue, HitInfo
 core/            Units (Smash units <-> meters), PhysicsLayers, DebugSettings
-docs/            physics.md (what's ported and how), fighter-stats.md (every stat, ranges)
+docs/            physics.md (what's ported and how), fighter-stats.md (every stat, ranges),
+                 ai.md (how the CPUs work, their levels and tuning)
 fighters/        Fighter (CharacterBody3D), FighterStats, Moveset, FighterData,
                  FighterModel (placeholder posing), AnimatedFighterModel (rigged glTF models)
   states/        One FighterState per Smash action (idle, dash, jumpsquat, hitstun, ledge, ...)
@@ -68,12 +74,12 @@ fighters/        Fighter (CharacterBody3D), FighterStats, Moveset, FighterData,
                  animals, <name>.gltf. cat/ and bear/ also hold the shared <name>_moveset.tres.
     _licenses/   Licenses of third-party models
 input/           GameInput autoload (device tracking), InputTracker (buffer, flicks),
-                 controllers (PlayerController, DummyController), InputActions
+                 PlayerController, InputActions
   touch/         TouchStick, VirtualButton, touch controls scene
-match/           Match: owns the simulation loop, fighters, camera and UI
+match/           Match: owns the simulation loop, fighters, camera and UI; PlayerSlot (who plays each fighter)
 stages/          Stage base, SoftPlatform, StageLedge
   meadow/        The first stage
-tests/           Headless test suite (run_tests.gd)
+tests/           Headless test suite (run_tests.gd), CPU ladder and benchmark (ai_ladder.gd)
 ui/              HUD (damage meters), training overlay, pause menu, theme, SafeArea
 ```
 
@@ -86,7 +92,7 @@ ui/              HUD (damage meters), training overlay, pause menu, theme, SafeA
 1. `Fighter.tick()` for each fighter: poll the controller → `InputTracker` → hitlag or state update → move.
 2. `HitResolver.resolve()` detects every hit for the frame, then applies them all, so simultaneous hits trade.
 3. Overlapping grounded fighters are pushed apart.
-4. Blast-zone check, then `Fighter.sync_visuals()`.
+4. Blast-zone check, then `AiWorld.capture()` (what CPUs will see) and `Fighter.sync_visuals()`.
 
 Fighters never run their own `_physics_process`. The order is fixed and deterministic, which is also what rollback netcode would need.
 
@@ -95,7 +101,7 @@ Fighters never run their own `_physics_process`. The order is fixed and determin
 - **Smash units everywhere.** Stats, moves and formulas use Ultimate's units and frame timing, so community frame data copies over directly. `Units` converts at the boundary (10 units = 1 m).
 - **Data-driven characters.** A character is a `FighterData` resource with a model scene, `FighterStats` and a `Moveset` of `MoveData` / `HitboxData`. No character-specific code; add one in the inspector.
 - **States as small classes.** `FighterState` subclasses (`fighters/states/`) hold behaviour. `Fighter` holds physical state and shared helpers (`try_jump`, `try_ground_attack`, `apply_air_drift`, ...). States can't drift apart in how they handle a jump or an aerial.
-- **Controllers drive fighters.** `FighterController.poll()` returns an `InputFrame`. `PlayerController` reads the Input Map (keyboard, gamepad and touch all press the same `p1_*` actions); `DummyController` is the training dummy. A CPU or a network peer would be another controller.
+- **Controllers drive fighters.** `FighterController.poll()` returns an `InputFrame`. `PlayerController` reads the Input Map (keyboard, gamepad and touch all press the same `p1_*` actions). `CpuController` is a computer player (and the training dummy, as a CPU mode): it plays through the same inputs and sees other fighters only through delayed snapshots (see [docs/ai.md](docs/ai.md)). A network peer would be another controller.
 - **Visuals are separate from gameplay.** `FighterModel.sync()` poses the model from the fighter's state each frame: facing, tumble spin, hit flash, intangibility tint, and squash/lean for the placeholder models.
   `AnimatedFighterModel` instead picks an animation per state and steps the glTF's `AnimationPlayer` manually, one simulation frame at a time, so animations freeze in hitlag and attacks stretch to the move's length.
 
@@ -143,7 +149,6 @@ Other presets (Windows, macOS, Linux, Android, iOS) are set up with bundle ids. 
 - Ultimate's balloon knockback and parry (see [docs/physics.md](docs/physics.md#not-ported-yet)).
 - A character select screen and match rules (stocks, timer, results).
 - Per-animal movesets for the 12 animated animals, and hurtboxes that fit four-legged bodies (today's vertical capsule covers the torso; heads and tails stick out).
-- A CPU controller.
 - Rollback netcode: the simulation is already frame-stepped and ordered. It would need state snapshots and fixed-point or verified-deterministic math.
 
 ## Credits

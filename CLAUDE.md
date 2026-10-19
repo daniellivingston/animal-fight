@@ -1,12 +1,15 @@
 # Animal Fight — notes for Claude
 
 Godot 4.7.2 + GDScript, Smash Bros-style platform fighter, desktop + mobile + web (touch is first-class).
-Architecture and layout are in README.md; ported mechanics in docs/physics.md; stats in docs/fighter-stats.md.
+Architecture and layout are in README.md; ported mechanics in docs/physics.md; stats in docs/fighter-stats.md;
+CPU players in docs/ai.md.
 
 ## Commands
 - Godot binary: `/Applications/Godot.app/Contents/MacOS/Godot`
 - Re-import / refresh class cache after adding `class_name` scripts: `Godot --headless --path . --import`
 - Tests (run after any gameplay change): `Godot --headless --path . --fixed-fps 60 --script res://tests/run_tests.gd`
+- CPU ladder / benchmark (slow, by hand, after AI tuning): `Godot --headless --path . --fixed-fps 60 --script res://tests/ai_ladder.gd -- --matches=20`
+  (`-- --bench` for timings; `--levels=a,b` to split pairs over processes; `--log-sd` prints the frames before each self-destruct).
 - Smoke run (should print only the banner): `Godot --headless --path . --quit-after 120`
 - Desktop run with touch controls: `Godot --path . -- --touch`
 - Web export: `Godot --headless --path . --export-release "Web" build/web/index.html`
@@ -20,6 +23,10 @@ Architecture and layout are in README.md; ported mechanics in docs/physics.md; s
   New per-frame gameplay goes into `Fighter.tick()`, a state's `update()` or the match loop, in order.
 - Gameplay reads input only through `Fighter.input` (`InputTracker`); controllers produce `InputFrame`s.
   Never poll `Input` from fighters or states.
+- CPUs (`ai/`) act only through `InputFrame`s and see other fighters only through `AiWorld` snapshots
+  (never their live state, inputs or controllers). `RecoveryPlanner`/`Predict` mirror the fighter physics frame
+  by frame: when movement, air dodge, up special or ledge-grab rules change, update them too (the recovery
+  fidelity test catches drift). docs/ai.md has the rules (R0-R7) and the level table.
 - y is up in all gameplay math. `Vector2.UP` is `(0, -1)` in Godot, so write `Vector2(0, 1)`.
 - New combat constants and formulas go in `SmashFormulas` with a source comment; record what's
   ported (or approximated) in docs/physics.md.

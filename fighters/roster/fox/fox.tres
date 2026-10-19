@@ -4,6 +4,7 @@
 [ext_resource type="Resource" path="res://fighters/roster/cat/cat_moveset.tres" id="2_1g1qh"]
 [ext_resource type="Script" path="res://fighters/fighter_data.gd" id="3_e2elp"]
 [ext_resource type="Script" path="res://fighters/fighter_stats.gd" id="4_8yo3q"]
+[ext_resource type="Resource" path="res://ai/profiles/speedster.tres" id="cpu_profile"]
 
 [sub_resource type="Resource" id="Resource_srefm"]
 script = ExtResource("4_8yo3q")
@@ -35,3 +36,4 @@ color = Color(0.93, 0.45, 0.15, 1)
 model_scene = ExtResource("1_f1527")
 stats = SubResource("Resource_srefm")
 moveset = ExtResource("2_1g1qh")
+cpu_profile = ExtResource("cpu_profile")

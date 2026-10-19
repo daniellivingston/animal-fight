@@ -22,3 +22,7 @@ func update() -> void:
 
 func controls_position() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	return maxi(RESPAWN_DELAY - frame, 0) + RespawnState.MIN_FRAMES

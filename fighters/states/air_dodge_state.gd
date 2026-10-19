@@ -63,3 +63,11 @@ func is_intangible() -> bool:
 
 func can_grab_ledge() -> bool:
 	return frame > fighter.stats.air_dodge_intangible.y
+
+
+func frames_until_actionable() -> int:
+	return maxi(fighter.stats.air_dodge_frames - frame, 0)
+
+
+func intangible_frames_left() -> int:
+	return maxi(fighter.stats.air_dodge_intangible.y - frame, 0)

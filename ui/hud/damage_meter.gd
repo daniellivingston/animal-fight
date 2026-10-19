@@ -10,6 +10,7 @@ const SHAKE_FRAMES := 12
 var fighter: Fighter
 
 var _name_label := Label.new()
+var _tag_label := Label.new()
 var _percent_label := Label.new()
 var _score_label := Label.new()
 var _shake := 0
@@ -39,9 +40,18 @@ func setup(p_fighter: Fighter) -> void:
 	_percent_label.add_theme_color_override(&"font_outline_color", Color.BLACK)
 	_percent_label.add_theme_constant_override(&"outline_size", 8)
 	_score_label.add_theme_font_size_override(&"font_size", 16)
-	for label: Label in [_name_label, _percent_label, _score_label]:
+	_tag_label.add_theme_font_size_override(&"font_size", 15)
+	_tag_label.visible = false
+	for label: Label in [_name_label, _tag_label, _percent_label, _score_label]:
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		column.add_child(label)
+
+
+## Shows [param text] (e.g. "CPU 3") under the name, or nothing when empty.
+func set_tag(text: String, color: Color) -> void:
+	_tag_label.text = text
+	_tag_label.visible = not text.is_empty()
+	_tag_label.add_theme_color_override(&"font_color", color)
 
 
 func _process(_delta: float) -> void:

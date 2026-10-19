@@ -40,3 +40,7 @@ func update() -> void:
 
 func stops_at_edges() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	return maxi(fighter.stats.run_turn_frames - frame, 0) if turning else 0

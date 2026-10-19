@@ -43,3 +43,8 @@ func update() -> void:
 
 func stops_at_edges() -> bool:
 	return true
+
+
+## Lying, then the fastest getup.
+func frames_until_actionable() -> int:
+	return maxi(MIN_LYING_FRAMES - frame, 0) + GETUP_FRAMES

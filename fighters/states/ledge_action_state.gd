@@ -79,3 +79,11 @@ func controls_position() -> bool:
 
 func is_intangible() -> bool:
 	return frame <= _intangible_until
+
+
+func frames_until_actionable() -> int:
+	return maxi(_duration - frame, 0)
+
+
+func intangible_frames_left() -> int:
+	return maxi(_intangible_until - frame, 0)

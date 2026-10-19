@@ -49,3 +49,8 @@ func on_left_ground() -> void:
 
 func can_grab_ledge() -> bool:
 	return true
+
+
+## Helpless fighters can't act until they land and finish the landing lag.
+func frames_until_actionable() -> int:
+	return helpless_landing_lag + 1 if helpless else 0

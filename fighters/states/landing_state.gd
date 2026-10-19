@@ -23,3 +23,7 @@ func update() -> void:
 
 func stops_at_edges() -> bool:
 	return true
+
+
+func frames_until_actionable() -> int:
+	return maxi(duration - frame, 0)

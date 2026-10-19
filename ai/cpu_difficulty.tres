@@ -1,0 +1,119 @@
+[gd_resource type="Resource" script_class="CpuDifficulty" format=3]
+
+[ext_resource type="Script" path="res://ai/cpu_difficulty.gd" id="1_wldln"]
+
+[sub_resource type="Curve" id="Curve_kuc5l"]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 0.0, 1, 1, Vector2(0.21, 0), 0.0, 0.0, 1, 1, Vector2(0.31, 0), 0.0, 0.0, 1, 1, Vector2(0.42, 0), 0.0, 5.0, 1, 1, Vector2(0.48, 0.3), 5.0, 1.666666, 1, 1, Vector2(0.6, 0.5), 1.666666, 1.3333335, 1, 1, Vector2(0.75, 0.7), 1.3333335, 1.1999999, 1, 1, Vector2(1, 1), 1.1999999, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_8mh1h"]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 0.0, 1, 1, Vector2(0.21, 0), 0.0, 0.0, 1, 1, Vector2(0.31, 0), 0.0, 0.90909106, 1, 1, Vector2(0.42, 0.1), 0.90909106, 1.6666667, 1, 1, Vector2(0.48, 0.2), 1.6666667, 1.2499995, 1, 1, Vector2(0.6, 0.35), 1.2499995, 1.0000001, 1, 1, Vector2(0.75, 0.5), 1.0000001, 0.79999995, 1, 1, Vector2(1, 0.7), 0.79999995, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_1jpm1"]
+_limits = [0.0, 4.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 0.0, 1, 1, Vector2(0.21, 0), 0.0, 9.999999, 1, 1, Vector2(0.31, 1), 9.999999, 0.0, 1, 1, Vector2(0.42, 1), 0.0, 0.0, 1, 1, Vector2(0.48, 1), 0.0, 8.33333, 1, 1, Vector2(0.6, 2), 8.33333, 0.0, 1, 1, Vector2(0.75, 2), 0.0, 8.0, 1, 1, Vector2(1, 4), 8.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_15scg"]
+_limits = [0.0, 30.0, 0.0, 1.0]
+_data = [Vector2(0, 30), 0.0, -26.666664, 1, 1, Vector2(0.15, 26), -26.666664, -33.33334, 1, 1, Vector2(0.21, 24), -33.33334, -39.999996, 1, 1, Vector2(0.31, 20), -39.999996, -36.36364, 1, 1, Vector2(0.42, 16), -36.36364, -33.333332, 1, 1, Vector2(0.48, 14), -33.333332, -33.333324, 1, 1, Vector2(0.6, 10), -33.333324, -20.000002, 1, 1, Vector2(0.75, 7), -20.000002, -12.0, 1, 1, Vector2(1, 4), -12.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_alhuo"]
+_data = [Vector2(0, 0.05), 0.0, 0.4666666, 1, 1, Vector2(0.15, 0.12), 0.4666666, 1.3333338, 1, 1, Vector2(0.21, 0.2), 1.3333338, 0.4999999, 1, 1, Vector2(0.31, 0.25), 0.4999999, 0.90909094, 1, 1, Vector2(0.42, 0.35), 0.90909094, 1.6666664, 1, 1, Vector2(0.48, 0.45), 1.6666664, 0.8333333, 1, 1, Vector2(0.6, 0.55), 0.8333333, 1.0, 1, 1, Vector2(0.75, 0.7), 1.0, 0.6000001, 1, 1, Vector2(1, 0.85), 0.6000001, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_3qywd"]
+_data = [Vector2(0, 0), 0.0, 0.6666667, 1, 1, Vector2(0.15, 0.1), 0.6666667, 1.6666671, 1, 1, Vector2(0.21, 0.2), 1.6666671, 1.0, 1, 1, Vector2(0.31, 0.3), 1.0, 1.3636364, 1, 1, Vector2(0.42, 0.45), 1.3636364, 1.6666671, 1, 1, Vector2(0.48, 0.55), 1.6666671, 1.2499994, 1, 1, Vector2(0.6, 0.7), 1.2499994, 1.0000005, 1, 1, Vector2(0.75, 0.85), 1.0000005, 0.5999999, 1, 1, Vector2(1, 1), 0.5999999, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_tckyw"]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 3.3333342, 1, 1, Vector2(0.21, 0.2), 3.3333342, 1.4999998, 1, 1, Vector2(0.31, 0.35), 1.4999998, 1.3636366, 1, 1, Vector2(0.42, 0.5), 1.3636366, 3.333333, 1, 1, Vector2(0.48, 0.7), 3.333333, 0.8333333, 1, 1, Vector2(0.6, 0.8), 0.8333333, 0.66666657, 1, 1, Vector2(0.75, 0.9), 0.66666657, 0.4000001, 1, 1, Vector2(1, 1), 0.4000001, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_3nypj"]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 0.0, 1, 1, Vector2(0.21, 0), 0.0, 0.99999994, 1, 1, Vector2(0.31, 0.1), 0.99999994, 1.3636366, 1, 1, Vector2(0.42, 0.25), 1.3636366, 1.6666664, 1, 1, Vector2(0.48, 0.35), 1.6666664, 1.2499996, 1, 1, Vector2(0.6, 0.5), 1.2499996, 1.3333335, 1, 1, Vector2(0.75, 0.7), 1.3333335, 0.79999995, 1, 1, Vector2(1, 0.9), 0.79999995, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_skx7g"]
+_data = [Vector2(0, 0), 0.0, 0.6666667, 1, 1, Vector2(0.15, 0.1), 0.6666667, 1.6666671, 1, 1, Vector2(0.21, 0.2), 1.6666671, 1.4999998, 1, 1, Vector2(0.31, 0.35), 1.4999998, 1.3636366, 1, 1, Vector2(0.42, 0.5), 1.3636366, 1.6666671, 1, 1, Vector2(0.48, 0.6), 1.6666671, 1.2499994, 1, 1, Vector2(0.6, 0.75), 1.2499994, 1.0, 1, 1, Vector2(0.75, 0.9), 1.0, 0.4000001, 1, 1, Vector2(1, 1), 0.4000001, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_0pp83"]
+_data = [Vector2(0, 0.15), 0.0, 1.0, 1, 1, Vector2(0.15, 0.3), 1.0, 2.0, 1, 1, Vector2(0.21, 0.42), 2.0, 0.5999999, 1, 1, Vector2(0.31, 0.48), 0.5999999, 0.90909094, 1, 1, Vector2(0.42, 0.58), 0.90909094, 1.6666671, 1, 1, Vector2(0.48, 0.68), 1.6666671, 0.58333313, 1, 1, Vector2(0.6, 0.75), 0.58333313, 0.8000002, 1, 1, Vector2(0.75, 0.87), 0.8000002, 0.4400001, 1, 1, Vector2(1, 0.98), 0.4400001, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_75fs2"]
+_data = [Vector2(0, 0), 0.0, 0.6666667, 1, 1, Vector2(0.15, 0.1), 0.6666667, 1.6666671, 1, 1, Vector2(0.21, 0.2), 1.6666671, 1.0, 1, 1, Vector2(0.31, 0.3), 1.0, 1.3636364, 1, 1, Vector2(0.42, 0.45), 1.3636364, 1.6666671, 1, 1, Vector2(0.48, 0.55), 1.6666671, 1.2499994, 1, 1, Vector2(0.6, 0.7), 1.2499994, 1.0000005, 1, 1, Vector2(0.75, 0.85), 1.0000005, 0.5999999, 1, 1, Vector2(1, 1), 0.5999999, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_3monh"]
+_limits = [0.0, 8.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 6.666666, 1, 1, Vector2(0.15, 1), 6.666666, 16.66667, 1, 1, Vector2(0.21, 2), 16.66667, 9.999999, 1, 1, Vector2(0.31, 3), 9.999999, 9.090911, 1, 1, Vector2(0.42, 4), 9.090911, 16.666666, 1, 1, Vector2(0.48, 5), 16.666666, 8.33333, 1, 1, Vector2(0.6, 6), 8.33333, 6.6666675, 1, 1, Vector2(0.75, 7), 6.6666675, 4.0, 1, 1, Vector2(1, 8), 4.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_enawx"]
+_data = [Vector2(0, 0.05), 0.0, 0.4666666, 1, 1, Vector2(0.15, 0.12), 0.4666666, 1.6666671, 1, 1, Vector2(0.21, 0.22), 1.6666671, 0.5999999, 1, 1, Vector2(0.31, 0.28), 0.5999999, 0.90909094, 1, 1, Vector2(0.42, 0.38), 0.90909094, 2.0, 1, 1, Vector2(0.48, 0.5), 2.0, 0.8333333, 1, 1, Vector2(0.6, 0.6), 0.8333333, 1.1999998, 1, 1, Vector2(0.75, 0.78), 1.1999998, 0.68000007, 1, 1, Vector2(1, 0.95), 0.68000007, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_xmvb7"]
+_limits = [0.0, 40.0, 0.0, 1.0]
+_data = [Vector2(0, 40), 0.0, -26.666664, 1, 1, Vector2(0.15, 36), -26.666664, -66.66668, 1, 1, Vector2(0.21, 32), -66.66668, -19.999998, 1, 1, Vector2(0.31, 30), -19.999998, -27.272732, 1, 1, Vector2(0.42, 27), -27.272732, -33.333332, 1, 1, Vector2(0.48, 25), -33.333332, -24.999992, 1, 1, Vector2(0.6, 22), -24.999992, -26.66667, 1, 1, Vector2(0.75, 18), -26.66667, -32.0, 1, 1, Vector2(1, 10), -32.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_qymeq"]
+_limits = [0.0, 8.0, 0.0, 1.0]
+_data = [Vector2(0, 8), 0.0, -6.666666, 1, 1, Vector2(0.15, 7), -6.666666, 0.0, 1, 1, Vector2(0.21, 7), 0.0, -9.999999, 1, 1, Vector2(0.31, 6), -9.999999, -9.090911, 1, 1, Vector2(0.42, 5), -9.090911, 0.0, 1, 1, Vector2(0.48, 5), 0.0, -8.33333, 1, 1, Vector2(0.6, 4), -8.33333, -6.6666675, 1, 1, Vector2(0.75, 3), -6.6666675, -4.0, 1, 1, Vector2(1, 2), -4.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_xd7xe"]
+_limits = [0.0, 8.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 6.666666, 1, 1, Vector2(0.15, 1), 6.666666, 16.66667, 1, 1, Vector2(0.21, 2), 16.66667, 9.999999, 1, 1, Vector2(0.31, 3), 9.999999, 9.090911, 1, 1, Vector2(0.42, 4), 9.090911, 16.666666, 1, 1, Vector2(0.48, 5), 16.666666, 8.33333, 1, 1, Vector2(0.6, 6), 8.33333, 6.6666675, 1, 1, Vector2(0.75, 7), 6.6666675, 4.0, 1, 1, Vector2(1, 8), 4.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_wf2uu"]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 0.0, 1, 1, Vector2(0.21, 0), 0.0, 0.0, 1, 1, Vector2(0.31, 0), 0.0, 4.545455, 1, 1, Vector2(0.42, 0.5), 4.545455, 1.6666671, 1, 1, Vector2(0.48, 0.6), 1.6666671, 1.2499994, 1, 1, Vector2(0.6, 0.75), 1.2499994, 1.0, 1, 1, Vector2(0.75, 0.9), 1.0, 0.4000001, 1, 1, Vector2(1, 1), 0.4000001, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_stle6"]
+_limits = [0.0, 8.0, 0.0, 1.0]
+_data = [Vector2(0, 8), 0.0, -6.666666, 1, 1, Vector2(0.15, 7), -6.666666, -16.66667, 1, 1, Vector2(0.21, 6), -16.66667, -9.999999, 1, 1, Vector2(0.31, 5), -9.999999, -9.090911, 1, 1, Vector2(0.42, 4), -9.090911, -8.333333, 1, 1, Vector2(0.48, 3.5), -8.333333, -8.33333, 1, 1, Vector2(0.6, 2.5), -8.33333, -6.6666675, 1, 1, Vector2(0.75, 1.5), -6.6666675, -4.0, 1, 1, Vector2(1, 0.5), -4.0, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_5odxm"]
+_data = [Vector2(0, 0), 0.0, 0.3333333, 1, 1, Vector2(0.15, 0.05), 0.3333333, 0.83333355, 1, 1, Vector2(0.21, 0.1), 0.83333355, 0.99999994, 1, 1, Vector2(0.31, 0.2), 0.99999994, 1.3636364, 1, 1, Vector2(0.42, 0.35), 1.3636364, 1.6666664, 1, 1, Vector2(0.48, 0.45), 1.6666664, 1.25, 1, 1, Vector2(0.6, 0.6), 1.25, 1.0, 1, 1, Vector2(0.75, 0.75), 1.0, 0.5999999, 1, 1, Vector2(1, 0.9), 0.5999999, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_5mk7k"]
+_data = [Vector2(0, 0), 0.0, 0.0, 1, 1, Vector2(0.15, 0), 0.0, 1.6666671, 1, 1, Vector2(0.21, 0.1), 1.6666671, 0.99999994, 1, 1, Vector2(0.31, 0.2), 0.99999994, 1.3636364, 1, 1, Vector2(0.42, 0.35), 1.3636364, 2.5, 1, 1, Vector2(0.48, 0.5), 2.5, 1.666666, 1, 1, Vector2(0.6, 0.7), 1.666666, 1.0000005, 1, 1, Vector2(0.75, 0.85), 1.0000005, 0.5999999, 1, 1, Vector2(1, 1), 0.5999999, 0.0, 1, 1]
+point_count = 9
+
+[sub_resource type="Curve" id="Curve_3qk0w"]
+_limits = [0.0, 6.0, 0.0, 1.0]
+_data = [Vector2(0, 6), 0.0, -6.666666, 1, 1, Vector2(0.15, 5), -6.666666, 0.0, 1, 1, Vector2(0.21, 5), 0.0, -9.999999, 1, 1, Vector2(0.31, 4), -9.999999, -9.090911, 1, 1, Vector2(0.42, 3), -9.090911, 0.0, 1, 1, Vector2(0.48, 3), 0.0, -8.33333, 1, 1, Vector2(0.6, 2), -8.33333, -6.6666675, 1, 1, Vector2(0.75, 1), -6.6666675, -2.0, 1, 1, Vector2(1, 0.5), -2.0, 0.0, 1, 1]
+point_count = 9
+
+[resource]
+script = ExtResource("1_wldln")
+reaction_frames = SubResource("Curve_xmvb7")
+reaction_jitter = SubResource("Curve_qymeq")
+extrapolation = SubResource("Curve_skx7g")
+decision_interval = SubResource("Curve_15scg")
+follow_through = SubResource("Curve_0pp83")
+defend_chance = SubResource("Curve_alhuo")
+defend_quality = SubResource("Curve_3qywd")
+punish_chance = SubResource("Curve_enawx")
+combo_depth = SubResource("Curve_1jpm1")
+spacing_error = SubResource("Curve_stle6")
+timing_error = SubResource("Curve_3qk0w")
+move_pool = SubResource("Curve_3monh")
+smash_charge = SubResource("Curve_wf2uu")
+tech_chance = SubResource("Curve_5odxm")
+tech_mixup = SubResource("Curve_5mk7k")
+di_quality = SubResource("Curve_tckyw")
+recovery_options = SubResource("Curve_xd7xe")
+edgeguard_appetite = SubResource("Curve_3nypj")
+ledge_mixup = SubResource("Curve_75fs2")
+anticipation = SubResource("Curve_8mh1h")
+adaptation = SubResource("Curve_kuc5l")

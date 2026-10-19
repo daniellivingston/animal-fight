@@ -11,3 +11,5 @@ extends Resource
 @export var model_scene: PackedScene
 @export var stats: FighterStats
 @export var moveset: Moveset
+## Optional CPU flavour: personality and move preferences. CPUs play without one.
+@export var cpu_profile: CpuProfile
